@@ -38,8 +38,7 @@ body { background: #000; position: relative; z-index: 1; }
   padding: 2px; /* thickness of the outline */
   background: radial-gradient(
     circle at var(--x, 100%) var(--y, 100%),
-    rgba(59,130,246,0.3) 0%,
-    rgba(37,99,235,0.2) 40%,
+    var(--theme-card-glow) 0%,
     transparent 80%
   );
   -webkit-mask: 
@@ -113,11 +112,15 @@ button.w-full.text-left {
   right: 0;
   width: 2px;
   height: 100%;
-  background: linear-gradient(180deg, rgba(0, 149, 255, 0.6) 100%, rgba(0, 149, 255, 0.4) 100%, rgba(0, 149, 255, 0.6) 100%);
+  background: linear-gradient(
+    180deg,
+    var(--theme-card-glow) 0%,
+    rgba(0,0,0,0) 50%,
+    var(--theme-card-glow) 100%
+  );
   filter: blur(4px);
   pointer-events: none;
-  transition: background-position 0.3s ease;
-  background-size: 100% 200%;
+  transition: background 0.3s ease;
   z-index: 3;
 }
 /* Remove sidebar right border */
@@ -168,21 +171,40 @@ const { useState, useEffect, useRef } = React;
 const projects = {
   dll: [
     {
-      title: "Fortnite OG DLL",
-      description: "A working DLL for OG Fortnite modding.",
-      repo: "https://github.com/example/dll",
-      discord: "https://discord.gg/example",
-      image: "https://placehold.co/64x64/8a2be2/fff?text=DLL"
+      title: "Raider 3.5",
+      description: "Fortnitev3.5 SDK based game server.",
+      repo: "https://github.com/kem0x/raider3.5",
+      image: "https://avatars.githubusercontent.com/u/19430119?v=4"
+     // discordMemberCount: 1532 // Example count
+    },
+    {
+      title: "Universal Walking Simulator",
+      description: "Fortnite season 1-19 game server.",
+      repo: "https://github.com/Milxnor/Universal-Walking-Simulator",
+      image: "https://avatars.githubusercontent.com/u/84999745?v=4"
+    },
+    {
+      title: "Cobalt",
+      description: "Universal SSL Bypass for Fortnite, made by Milxnor.",
+      repo: "https://github.com/Milxnor/Cobalt",
+      image: "https://avatars.githubusercontent.com/u/84999745?v=4"
     }
     // Add more DLL projects here
   ],
-  project: [
+  projects: [
     {
       title: "Project Reboot",
       description: "Made by Milxnor, and many others.",
       repo: "https://github.com/Milxnor/Project-Reboot-3.0/tree/master",
       discord: "https://discord.gg/H9sGkxBThS",
-      image: "https://placehold.co/64x64/7c3aed/fff?text=PR"
+      image: "https://pbs.twimg.com/profile_images/1934351954505052160/mUca_K1Q_400x400.jpg",
+      discordMemberCount: 4820 // Example count
+    },
+    {
+      title: "Era",
+      description: "Project Era, the oldest hosting server. Made by dani, and more.",
+      discord: "https://discord.gg/erafn",
+      image: "https://cdn2.steamgriddb.com/grid/7eb374c4c89c32d0fa63c2b4af5eefdc.png"
     }
     // Add more 'projects' category projects here
   ],
@@ -214,12 +236,13 @@ const projects = {
 
 const tabs = [
   { id: "announcements", label: "Announcements" },
-  { id: "projects", label: "Projects" },
+  { id: "projectz", label: "Projects" },
   { id: "dll", label: "DLL" },
   { id: "backend", label: "Backend" },
   { id: "launcher", label: "Launcher" },
   { id: "sdk", label: "SDK" },
   { id: "tools", label: "Tools" }
+  // Settings tab will be rendered separately at the bottom
 ];
 
 /* Hook for page-level cursor-follow glow */
@@ -247,8 +270,34 @@ const tabIcons = {
   launcher: "https://img.icons8.com/ios-filled/100/FFFFFF/missile.png",
   sdk: "https://img.icons8.com/external-tal-revivo-light-tal-revivo/96/FFFFFF/external-skd-badge-logotype-isolated-on-white-background-development-light-tal-revivo.png",
   tools: "https://img.icons8.com/ios-filled/100/FFFFFF/maintenance.png",
-  projects: "https://img.icons8.com/ios-filled/100/FFFFFF/ms-project.png"
+  projects: "https://img.icons8.com/ios-filled/100/FFFFFF/ms-project.png",
+  settings: "https://img.icons8.com/ios-filled/50/FFFFFF/settings.png"
 };
+
+function SettingsPanel({ setTheme, currentTheme }) {
+  const themes = [
+    { name: "Black & Blue", gradient: "blue", colors: { from: "#2563eb", to: "#60a5fa", hover: "#3b82f6" } },
+    { name: "Black & Red", gradient: "red", colors: { from: "#dc2626", to: "#f87171", hover: "#ef4444" } },
+    { name: "Black & Purple", gradient: "purple", colors: { from: "#9333ea", to: "#a78bfa", hover: "#a21caf" } }
+  ];
+  return (
+    e('div', { className: "flex flex-col items-center space-y-4 p-4" },
+      e('h2', { className: "text-xl font-bold text-white mb-4" }, "Select Theme"),
+      themes.map(theme =>
+        e('button', {
+          key: theme.name,
+          onClick: () => setTheme(theme.gradient),
+          className:
+            "w-full py-2 px-4 rounded-lg bg-gray-800 text-white transition-colors" +
+            (currentTheme === theme.gradient ? " ring-2 ring-offset-2 ring-white" : ""),
+          style: currentTheme === theme.gradient
+            ? { background: `linear-gradient(90deg, ${theme.colors.from}, ${theme.colors.to})`, color: "#fff" }
+            : undefined
+        }, theme.name)
+      )
+    )
+  );
+}
 
 // Removed useSidebarGlow and sidebar partial glow logic
 
@@ -265,7 +314,21 @@ function Sidebar({ activeTab, setActiveTab }) {
         const isActive = activeIndex === index;
         return e('button', {
           key: tab.id,
-          className: `w-full text-left p-3 rounded-lg relative group bg-transparent flex items-center outline-glow${isActive ? ' active' : ''}`,
+          className:
+            [
+              "w-full",
+              "text-left",
+              "p-3",
+              "rounded-lg",
+              "relative",
+              "group",
+              "bg-transparent",
+              "flex",
+              "items-center",
+              "outline-glow",
+              (isActive ? "active" : ""),
+              (activeTab === tab.id ? "active" : ""),
+            ].filter(Boolean).join(" "),
           onClick: ()=>setActiveTab(tab.id),
           onMouseEnter: () => setActiveIndex(index),
           onMouseLeave: () => setActiveIndex(null),
@@ -282,7 +345,8 @@ function Sidebar({ activeTab, setActiveTab }) {
             } else {
               if (activeIndex === index) setActiveIndex(null);
             }
-          }
+          },
+          style: activeTab === tab.id ? { outline: `2px solid var(--theme-card-glow)` } : { outline: "none" }
         },
           // Sidebar icon image instead of purple circle
           e('img', {
@@ -294,20 +358,50 @@ function Sidebar({ activeTab, setActiveTab }) {
         )
       })
     ),
+    // Settings tab at the bottom of sidebar
+    e('div', { className: "mt-auto flex flex-col z-10 relative" },
+      e('button', {
+        className:
+          [
+            "w-full",
+            "text-left",
+            "p-3",
+            "rounded-lg",
+            "relative",
+            "group",
+            "bg-transparent",
+            "flex",
+            "items-center",
+            "outline-glow",
+            (activeTab === "settings" ? "active" : "")
+          ].filter(Boolean).join(" "),
+        onClick: () => setActiveTab("settings"),
+        onMouseEnter: () => setActiveIndex("settings"),
+        onMouseLeave: () => setActiveIndex(null),
+        style: activeTab === "settings" ? { outline: `2px solid var(--theme-card-glow)` } : { outline: "none" }
+      },
+        e('img', {
+          src: tabIcons.settings,
+          alt: "",
+          className: "sidebar-icon-img"
+        }),
+        e('span', { className: "relative z-10 text-white" }, "Settings")
+      )
+    ),
     e('div', { className: "sidebar-right-glow" })
   );
 }
 
 const announcementsData = [
   {
-    image: "https://pbs.twimg.com/media/GEfvKqdWAAEkQd5.jpg:large",
-    title: "Leak",
-    text: "Welcome to Project Hub, the place to get everything."
+    image: "https://pbs.twimg.com/media/Gv5zL-FXMAA_x1p.jpg:large",
+    title: "Updates",
+    text: "New animations, and color theme changer."
   },
   {
     image: "https://pbs.twimg.com/media/FmIZIQmXEAMr3Bq.jpg:large",
     title: "Ack",
-    text: "We are currently not public. So either leaked or beta."
+    text: "Discord Member Count, card is currently broken."
   },
   {
     image: "https://www.therisingnews.com/wp-content/uploads/2024/03/GILT9hCWAAA-EtR.jpeg",
@@ -385,7 +479,7 @@ function Announcement() {
   );
 }
 
-function ProjectCard({ title, description, repo, discord, image }) {
+function ProjectCard({ title, description, repo, discord, image, onClick }) {
   const [active, setActive] = useState(false);
   const [expanded, setExpanded] = useState(false); // Track expansion
   const ref = useRef(null);
@@ -411,22 +505,20 @@ function ProjectCard({ title, description, repo, discord, image }) {
   const collapsedDesc = description ? description.slice(0, 20) + "..." : "";
 
   // Animate height for expand/collapse and allow layout to reflow
-  // Use min-h for consistent collapsed height and let grow naturally when expanded
-  // Tailwind: min-h-[2.5em] for collapsed, min-h-0 for expanded
-  // We'll use style to animate height
   const cardStyle = {
     transition: "min-height 0.2s, box-shadow 0.2s",
-    minHeight: expanded ? "8.5em" : "6.5em"
+    minHeight: expanded ? "8.5em" : "6.5em",
+    cursor: onClick ? "pointer" : undefined
   };
 
   return e('div', {
     ref,
-    // Set fixed width and remove mx-auto for grid alignment
     className: `w-[200px] bg-transparent rounded-2xl shadow-xl p-8 text-center relative outline-glow group flex flex-col justify-center items-center transition-all duration-200${active ? ' active' : ''}`,
     style: cardStyle,
     onMouseEnter: () => setActive(true),
     onMouseLeave: () => setActive(false),
-    onMouseMove: handleMouseMove
+    onMouseMove: handleMouseMove,
+    onClick: onClick
   },
     image && e('img', {
       src: image,
@@ -444,7 +536,7 @@ function ProjectCard({ title, description, repo, discord, image }) {
     ),
     showReadMore &&
       e('button', {
-        onClick: () => setExpanded(!expanded),
+        onClick: (event) => { event.stopPropagation(); setExpanded(!expanded); },
         className: "text-sm text-blue-400 mt-2 hover:underline"
       }, e('span', { className: "text-white" }, expanded ? "Read Less" : "Read More")),
     e('div', { className:"flex justify-center space-x-2 mt-2" },
@@ -452,7 +544,8 @@ function ProjectCard({ title, description, repo, discord, image }) {
         href:repo,
         target:"_blank",
         rel:"noopener noreferrer",
-        className:"flex items-center space-x-2 hover:text-blue-400"
+        className:"flex items-center space-x-2 hover:text-blue-400",
+        onClick: (event) => event.stopPropagation()
       },
         e('img', {
           src: "https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/github.svg",
@@ -465,7 +558,8 @@ function ProjectCard({ title, description, repo, discord, image }) {
         href:discord,
         target:"_blank",
         rel:"noopener noreferrer",
-        className:"flex items-center space-x-2 hover:text-blue-400"
+        className:"flex items-center space-x-2 hover:text-blue-400",
+        onClick: (event) => event.stopPropagation()
       },
         e('img', {
           src: "https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/discord.svg",
@@ -478,32 +572,373 @@ function ProjectCard({ title, description, repo, discord, image }) {
   );
 }
 
-function ProjectGrid({ projects }) {
+function ProjectGrid({ projects, onProjectClick }) {
   // Align cards to start right next to sidebar and flow left to right, with tight gap,
   // wrap to next line as needed, and cards close together.
   return e('div', {
     className: "flex flex-wrap justify-start gap-2"
   },
-    projects.map((p, i) => e(ProjectCard, { ...p, key: i }))
+    projects.map((p, i) =>
+      e(ProjectCard, {
+        ...p,
+        key: i,
+        onClick: onProjectClick ? (() => onProjectClick(p)) : undefined
+      })
+    )
   );
 }
 
-/* App */
+// Side panel for project details
+function ProjectSidePanel({ project, onClose }) {
+  const [visible, setVisible] = useState(false);
+  const [shouldRender, setShouldRender] = useState(true);
+  const panelRef = useRef(null);
+
+  // Animate in on mount
+  useEffect(() => {
+    setShouldRender(true);
+    setTimeout(() => setVisible(true), 10);
+    return () => {};
+  }, []);
+
+  // Handle close: animate out, then unmount
+  const handleClose = () => {
+    setVisible(false);
+    setTimeout(() => {
+      setShouldRender(false);
+      onClose && onClose();
+    }, 300);
+  };
+
+  // If not rendering, don't show
+  if (!shouldRender) return null;
+
+  return e('div', {
+    ref: panelRef,
+    className:
+      "fixed top-0 right-0 h-full w-96 bg-transparent p-6 flex flex-col overflow-auto z-50 backdrop-blur-sm transition-transform duration-300 ease-in-out",
+    style: {
+      boxShadow: "0 0 60px 0 rgba(59,130,246,0.12)",
+      transform: visible ? "translateX(0)" : "translateX(100%)",
+      pointerEvents: visible ? "auto" : "none"
+    }
+  },
+    e('div', { className: "relative flex flex-col flex-1" },
+      // Close button
+      e('button', {
+        onClick: handleClose,
+        className: "absolute top-2 right-2 text-white bg-black/40 rounded-full w-8 h-8 flex items-center justify-center hover:bg-blue-700/60 outline-glow z-10"
+      }, e('span', { className: "text-2xl font-bold" }, "×")),
+      // Panel content with gradient/outline inside
+      e('div', { className: "flex flex-col items-center outline-glow active rounded-2xl p-4 mt-6 bg-black/30 relative" },
+        project.logo || project.image
+          ? e('img', {
+              src: project.logo || project.image,
+              alt: project.title + " logo",
+              className: "w-20 h-20 rounded-xl mb-4 object-cover shadow-lg"
+            })
+          : null,
+        e('h2', { className: "text-2xl font-bold mb-2 text-white text-center" }, project.title),
+        e('p', { className: "mb-4 text-white text-center" }, project.description),
+        e('div', { className: "flex gap-3 mb-4" },
+          project.repo && e('a', {
+            href: project.repo,
+            target: "_blank",
+            rel: "noopener noreferrer",
+            className: "hover:text-blue-400"
+          }, e('img', {
+            src: "https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/github.svg",
+            alt: "GitHub",
+            style: { width: 24, height: 24, filter: "invert(1)" }
+          })),
+          project.discord && e('a', {
+            href: project.discord,
+            target: "_blank",
+            rel: "noopener noreferrer",
+            className: "hover:text-blue-400"
+          }, e('img', {
+            src: "https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/discord.svg",
+            alt: "Discord",
+            style: { width: 24, height: 24, filter: "invert(1)" }
+          }))
+        ),
+        // Discord member count card
+        project.discordMemberCount && e('div', {
+          className: "outline-glow active bg-black/30 rounded-2xl p-4 mt-4 w-full text-center"
+        },
+          e('h3', { className: "text-lg font-bold text-white" }, "Discord Members"),
+          e('p', { className: "text-white text-lg" }, project.discordMemberCount)
+        )
+      )
+    )
+  );
+}
+
 function App() {
   usePageGlow();
-  const [activeTab, setActiveTab] = useState("announcements");
-  return e('div', { className: "flex h-screen text-white" },
+  const [activeTab, _setActiveTab] = useState("announcements");
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [theme, setTheme] = useState("blue"); // default theme
+
+  // Wrap setActiveTab to also close project panel
+  const setActiveTab = (tab) => {
+    _setActiveTab(tab);
+    setSelectedProject(null);
+  };
+
+  // Map theme to colors for gradients, glows, hovers
+  const themeConfig = {
+    blue: {
+      gradientFrom: "#2563eb",
+      gradientTo: "#60a5fa",
+      hover: "#3b82f6",
+      shadow: "rgba(59,130,246,0.3)",
+      cardGlow: "rgba(59,130,246,0.3)",
+      dotActive: "bg-blue-400",
+      dotInactive: "bg-blue-900"
+    },
+    red: {
+      gradientFrom: "#dc2626",
+      gradientTo: "#f87171",
+      hover: "#ef4444",
+      shadow: "rgba(239,68,68,0.3)",
+      cardGlow: "rgba(239,68,68,0.3)",
+      dotActive: "bg-red-400",
+      dotInactive: "bg-red-900"
+    },
+    purple: {
+      gradientFrom: "#9333ea",
+      gradientTo: "#a78bfa",
+      hover: "#a21caf",
+      shadow: "rgba(168,139,250,0.3)",
+      cardGlow: "rgba(168,139,250,0.3)",
+      dotActive: "bg-purple-400",
+      dotInactive: "bg-purple-900"
+    }
+  };
+  const themeVars = themeConfig[theme];
+
+  // Determine which projects list to show for grid
+  let gridProjects = [];
+  if (activeTab === "dll") gridProjects = projects.dll;
+  else if (activeTab === "backend") gridProjects = projects.backend;
+  else if (activeTab === "launcher") gridProjects = projects.launcher;
+  else if (activeTab === "sdk") gridProjects = projects.sdk;
+  else if (activeTab === "projectz") gridProjects = projects.projects;
+  else if (activeTab === "tools") gridProjects = projects.tools;
+
+  // For overlay/shrink effect
+  const panelOpen = !!selectedProject;
+
+  // Set CSS variables for theme on body or root
+  useEffect(() => {
+    document.body.style.setProperty('--theme-gradient-from', themeVars.gradientFrom);
+    document.body.style.setProperty('--theme-gradient-to', themeVars.gradientTo);
+    document.body.style.setProperty('--theme-hover', themeVars.hover);
+    document.body.style.setProperty('--theme-shadow', themeVars.shadow);
+    document.body.style.setProperty('--theme-card-glow', themeVars.cardGlow);
+    document.documentElement.style.setProperty('--theme-card-glow', themeVars.cardGlow);
+  }, [theme, themeVars]);
+
+  // Custom Announcement and ProjectCard with theme support
+  function ThemedAnnouncement() {
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const total = announcementsData.length;
+    const [active, setActive] = useState(false);
+    const ref = useRef(null);
+    const prev = () => setCurrentIndex((currentIndex - 1 + total) % total);
+    const next = () => setCurrentIndex((currentIndex + 1) % total);
+    const current = announcementsData[currentIndex];
+    const handleMouseMove = (event) => {
+      if (!ref.current) return;
+      const rect = ref.current.getBoundingClientRect();
+      const x = event.clientX;
+      const y = event.clientY;
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const dist = Math.hypot(centerX - x, centerY - y);
+      if (dist <= 100) {
+        if (!active) setActive(true);
+        // Update CSS variables for gradient position
+        const relX = x - rect.left;
+        const relY = y - rect.top;
+        ref.current.style.setProperty('--x', relX + 'px');
+        ref.current.style.setProperty('--y', relY + 'px');
+      } else {
+        if (active) setActive(false);
+      }
+    };
+    return e('div', {
+      ref,
+      className: `w-full h-full flex justify-center items-center relative outline-glow${active ? ' active' : ''}`,
+      onMouseMove: handleMouseMove,
+      onMouseLeave: () => setActive(false),
+      onMouseEnter: () => setActive(true),
+      style: {
+        '--theme-gradient-from': themeVars.gradientFrom,
+        '--theme-gradient-to': themeVars.gradientTo
+      }
+    },
+      e('div', { className: "relative max-w-4xl flex flex-col justify-center items-center space-y-6 w-full h-full px-6" },
+        e('img', { src: current.image, alt: current.title, className: "rounded-xl mx-auto max-w-full max-h-[60vh] object-contain" }),
+        e('h2', { className: "text-4xl font-bold text-white" }, current.title),
+        e('p', { className: "text-white text-lg max-w-3xl" }, current.text),
+        e('div', { className: "absolute top-1/2 left-4 -translate-y-1/2 cursor-pointer text-white select-none text-3xl font-bold", onClick: prev, role: "button", tabIndex: 0, onKeyDown: (e) => { if(e.key === 'Enter') prev(); } },
+          e('span', { className: "text-white" }, "‹")
+        ),
+        e('div', { className: "absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer text-white select-none text-3xl font-bold", onClick: next, role: "button", tabIndex: 0, onKeyDown: (e) => { if(e.key === 'Enter') next(); } },
+          e('span', { className: "text-white" }, "›")
+        ),
+        e('div', { className: "flex justify-center space-x-2 mt-6" },
+          announcementsData.map((_, idx) =>
+            e('span', {
+              key: idx,
+              className: `w-3 h-3 rounded-full cursor-pointer ${idx === currentIndex ? themeVars.dotActive : themeVars.dotInactive} text-white`,
+              onClick: () => setCurrentIndex(idx),
+              role: "button",
+              tabIndex: 0,
+              onKeyDown: (e) => { if(e.key === 'Enter') setCurrentIndex(idx); }
+            })
+          )
+        )
+      )
+    );
+  }
+
+  function ThemedProjectCard(props) {
+    // Same logic as ProjectCard but with dynamic theme on outline-glow
+    const [active, setActive] = useState(false);
+    const [expanded, setExpanded] = useState(false);
+    const ref = useRef(null);
+    const handleMouseMove = (event) => {
+      if (!ref.current) return;
+      const rect = ref.current.getBoundingClientRect();
+      const x = event.clientX;
+      const y = event.clientY;
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const dist = Math.hypot(centerX - x, centerY - y);
+      if (dist <= 100) {
+        if (!active) setActive(true);
+      } else {
+        if (active) setActive(false);
+      }
+    };
+    const showReadMore = props.description && props.description.length > 20;
+    const collapsedDesc = props.description ? props.description.slice(0, 20) + "..." : "";
+    const cardStyle = {
+      transition: "min-height 0.2s, box-shadow 0.2s",
+      minHeight: expanded ? "8.5em" : "6.5em",
+      cursor: props.onClick ? "pointer" : undefined,
+      '--theme-gradient-from': themeVars.gradientFrom,
+      '--theme-gradient-to': themeVars.gradientTo
+    };
+    return e('div', {
+      ref,
+      className: `w-[200px] bg-transparent rounded-2xl shadow-xl p-8 text-center relative outline-glow group flex flex-col justify-center items-center transition-all duration-200${active ? ' active' : ''}`,
+      style: cardStyle,
+      onMouseEnter: () => setActive(true),
+      onMouseLeave: () => setActive(false),
+      onMouseMove: handleMouseMove,
+      onClick: props.onClick
+    },
+      props.image && e('img', {
+        src: props.image,
+        alt: props.title + " logo",
+        className: "w-16 h-16 mx-auto rounded mb-2 object-cover"
+      }),
+      e('h3', { className:"text-2xl font-bold mb-4 text-white" }, props.title),
+      e('p', {
+        className:"text-white mb-4 transition-all duration-200",
+        style: expanded || !showReadMore
+          ? {}
+          : { overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', minHeight: '1.75em' }
+      },
+        expanded || !showReadMore ? props.description : collapsedDesc
+      ),
+      showReadMore &&
+        e('button', {
+          onClick: (event) => { event.stopPropagation(); setExpanded(!expanded); },
+          className: "text-sm mt-2 hover:underline",
+          style: { color: themeVars.gradientFrom }
+        }, e('span', { className: "text-white" }, expanded ? "Read Less" : "Read More")),
+      e('div', { className:"flex justify-center space-x-2 mt-2" },
+        props.repo && e('a', {
+          href:props.repo,
+          target:"_blank",
+          rel:"noopener noreferrer",
+          className:"flex items-center space-x-2 hover:text-blue-400",
+          onClick: (event) => event.stopPropagation()
+        },
+          e('img', {
+            src: "https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/github.svg",
+            alt: "GitHub",
+            style: { width: 20, height: 20, display: "inline-block", filter: "invert(1)" },
+            className: "inline-block"
+          })
+        ),
+        props.discord && e('a', {
+          href:props.discord,
+          target:"_blank",
+          rel:"noopener noreferrer",
+          className:"flex items-center space-x-2 hover:text-blue-400",
+          onClick: (event) => event.stopPropagation()
+        },
+          e('img', {
+            src: "https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/discord.svg",
+            alt: "Discord",
+            style: { width: 20, height: 20, display: "inline-block", filter: "invert(1)" },
+            className: "inline-block"
+          })
+        )
+      )
+    );
+  }
+
+  function ThemedProjectGrid({ projects, onProjectClick }) {
+    // Custom handler to close and open the side panel smoothly
+    const handleCardClick = (project) => {
+      setSelectedProject(null);
+      setTimeout(() => {
+        setSelectedProject(project);
+      }, 20);
+    };
+    return e('div', {
+      className: "flex flex-wrap justify-start gap-2"
+    },
+      projects.map((p, i) =>
+        e(ThemedProjectCard, {
+          ...p,
+          key: i,
+          onClick: onProjectClick ? (() => handleCardClick(p)) : undefined
+        })
+      )
+    );
+  }
+
+  // SettingsPanel
+  function ThemedSettingsPanel(props) {
+    return e(SettingsPanel, { ...props, currentTheme: theme });
+  }
+
+  // Main return
+  return e('div', { className: "flex h-screen text-white relative", style: { '--theme-gradient-from': themeVars.gradientFrom, '--theme-gradient-to': themeVars.gradientTo } },
     e(Sidebar, { activeTab, setActiveTab }),
     e('main', {
-      className: "flex-1 overflow-y-auto p-8 flex flex-col gap-2"
+      className:
+        "flex-1 overflow-y-auto p-8 flex flex-col gap-2 transition-all duration-300" +
+        (panelOpen ? " scale-95 blur-sm pointer-events-none select-none opacity-70" : ""),
+      style: panelOpen ? { filter: "blur(2px)", transition: "all 0.3s" } : {}
     },
-      activeTab === "announcements" ? e(Announcement) :
-        activeTab === "dll" ? e(ProjectGrid, { projects: projects.dll}) :
-        activeTab === "backend" ? e(ProjectGrid, { projects: projects.backend }) :
-        activeTab === "launcher" ? e(ProjectGrid, { projects: projects.launcher }) :
-        activeTab === "sdk" ? e(ProjectGrid, { projects: projects.sdk }) :
-        activeTab === "tools" ? e(ProjectGrid, { projects: projects.tools }) : null
-    )
+      activeTab === "settings"
+        ? e(ThemedSettingsPanel, { setTheme })
+        : activeTab === "announcements"
+          ? e(ThemedAnnouncement)
+          : gridProjects.length > 0
+            ? e(ThemedProjectGrid, { projects: gridProjects, onProjectClick: setSelectedProject })
+            : null
+    ),
+    panelOpen && e(ProjectSidePanel, { project: selectedProject, onClose: () => setSelectedProject(null) })
   );
 }
 
