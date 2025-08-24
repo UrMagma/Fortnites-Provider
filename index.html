@@ -8,9 +8,53 @@
 <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 <style>
-body { background: #000; position: relative; z-index: 1; }
-/* Global page glow overlay */
-/* Blue glow overlay */
+:root {
+  --theme-bg: #121212;
+  --theme-panel: #1a1a1a;
+  --theme-border: #23272e;
+  --theme-card-glow: rgba(0, 120, 255, 0.5); /* Epic blue glow */
+  --theme-text: #ffffff;
+  --theme-text-secondary: #b7b7b7;
+}
+
+body {
+  background-color: var(--theme-bg);
+  color: var(--theme-text);
+  font-family: "Segoe UI", Arial, sans-serif;
+  position: relative;
+  z-index: 1;
+}
+
+.sidebar {
+  background: var(--theme-panel);
+  border-right: 1px solid var(--theme-border);
+  box-shadow: 2px 0 16px 0 rgba(0,0,0,0.5);
+}
+
+button, .card {
+  background: var(--theme-panel);
+  border: 1px solid var(--theme-border);
+  color: var(--theme-text);
+  transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,0.16);
+}
+
+button:hover, .card:hover {
+  border-color: var(--theme-card-glow);
+  box-shadow: 0 0 16px var(--theme-card-glow), 0 2px 16px 0 rgba(0,0,0,0.36);
+  background: #181f26;
+}
+
+h1, h2, h3 {
+  color: var(--theme-text);
+  letter-spacing: 0.01em;
+}
+
+p {
+  color: var(--theme-text-secondary);
+}
+
+/* Epic Games Launcher blue glow overlay */
 .page-glow-overlay {
   pointer-events: none;
   position: fixed;
@@ -19,13 +63,14 @@ body { background: #000; position: relative; z-index: 1; }
   z-index: 0;
   background: radial-gradient(
     circle at var(--x,50%) var(--y,50%),
-    rgba(59,130,246,0.08) 0%,
-    rgba(37,99,235,0.05) 40%,
+    rgba(0,120,255,0.08) 0%,
+    rgba(0,120,255,0.04) 40%,
     transparent 80%
   );
   transition: background-position 0.2s;
 }
-/* Outline glow for cards and buttons */
+
+/* Outline blue glow for cards and buttons */
 .outline-glow {
   position: relative;
   z-index: 1;
@@ -35,7 +80,7 @@ body { background: #000; position: relative; z-index: 1; }
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  padding: 2px; /* thickness of the outline */
+  padding: 2px;
   background: radial-gradient(
     circle at var(--x, 100%) var(--y, 100%),
     var(--theme-card-glow) 0%,
@@ -53,7 +98,8 @@ body { background: #000; position: relative; z-index: 1; }
 .outline-glow.active::before {
   opacity: 1;
 }
-/* Project Card and Button with dark gray borders, no gradient glow */
+
+/* Card and button border radius and spacing */
 .card-gradient-border {
   border-radius: 1.5rem;
   background-clip: padding-box;
@@ -69,12 +115,10 @@ body { background: #000; position: relative; z-index: 1; }
   isolation: isolate;
   -webkit-mask-composite: exclude;
   mask-composite: exclude;
-  -webkit-mask-composite: exclude;
   position: relative;
   z-index: 1;
 }
-/* Removed .card-glow-overlay from buttons and cards */
-/* Button styles */
+
 button.w-full.text-left {
   display: flex;
   align-items: center;
@@ -84,18 +128,16 @@ button.w-full.text-left {
   padding-right: 1.5rem;
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
-  border-radius: 0.75rem; /* normal rounded corners */
-  overflow: visible; /* remove overflow hidden to prevent pill effect */
+  border-radius: 0.75rem;
+  overflow: visible;
   background-color: transparent;
   isolation: isolate;
   -webkit-mask-composite: exclude;
   mask-composite: exclude;
-  -webkit-mask-composite: exclude;
   position: relative;
   z-index: 1;
 }
-/* Remove group hover pill effect */
-/* Sidebar button icon */
+
 .sidebar-icon-img {
   width: 20px;
   height: 20px;
@@ -104,8 +146,9 @@ button.w-full.text-left {
   background: transparent 95%;
   flex-shrink: 0;
   margin-right: 0.75rem;
+  box-shadow: 0 0 4px 0 rgba(0,120,255,0.15);
 }
-/* Remove previous full sidebar glow, and add partial right-side glow */
+
 .sidebar-right-glow {
   position: absolute;
   top: 0;
@@ -123,7 +166,7 @@ button.w-full.text-left {
   transition: background 0.3s ease;
   z-index: 3;
 }
-/* Remove sidebar right border */
+
 aside {
   border-right: none !important;
 }
@@ -174,20 +217,28 @@ const projects = {
       title: "Raider 3.5",
       description: "Fortnitev3.5 SDK based game server.",
       repo: "https://github.com/kem0x/raider3.5",
-      image: "https://avatars.githubusercontent.com/u/19430119?v=4"
-     // discordMemberCount: 1532 // Example count
+      image: "https://avatars.githubusercontent.com/u/19430119?v=4",
+      // Example images for screenshots
+      images: [
+        "https://gamingbolt.com/wp-content/uploads/2018/02/Fortnite.jpg"
+      ]
+      // discordMemberCount: 1532 // Example count
     },
     {
       title: "Universal Walking Simulator",
       description: "Fortnite season 1-19 game server.",
       repo: "https://github.com/Milxnor/Universal-Walking-Simulator",
-      image: "https://avatars.githubusercontent.com/u/84999745?v=4"
+      image: "https://avatars.githubusercontent.com/u/84999745?v=4",
+      images: [
+        "https://static.wikia.nocookie.net/fortnite/images/b/be/Key_Art_-_Battle_Pass_Season_10_-_Fortnite.jpg/revision/latest/scale-to-width-down/1200?cb=20190801082806"
+      ]
     },
     {
       title: "Cobalt",
       description: "Universal SSL Bypass for Fortnite, made by Milxnor.",
       repo: "https://github.com/Milxnor/Cobalt",
       image: "https://avatars.githubusercontent.com/u/84999745?v=4"
+      // No images for this
     }
     // Add more DLL projects here
   ],
@@ -207,11 +258,26 @@ const projects = {
       image: "https://cdn2.steamgriddb.com/grid/7eb374c4c89c32d0fa63c2b4af5eefdc.png"
     },
     {
+      title: "Aera",
+      description: "Join now and relieve the Ch1 S2 just like it was in 2017!",
+      discord: "https://discord.gg/sMFSe3zuPY",
+      image: "https://cdn.discordapp.com/attachments/1409221127993032854/1409222683840872598/Aera.png?ex=68ac9865&is=68ab46e5&hm=70b293069add9e43725921c1d0f470d7f99c2e9c9ee0eecb4fa0b677f200db3c&"
+    },
+    {
       title: "NL Hybrid",
       description: "A Fortnite hybrid server with unrealesed skins, every cosmetic, and more.",
       discord: "https://discord.gg/pEwDG9Wj",
       image: ""
-
+    }
+    ,
+    {
+      title: "Apollo",
+      description: "Relieve Chapter 2 Season 1 Fortnite again using ApolloMP!",
+      discord: "https://discord.gg/FbJcQvQ3",
+      image: "https://cdn.discordapp.com/attachments/1405428025373233232/1409215324263547102/377e07c877e33a411846ece2c73cb9d9-1.png?ex=68ac918b&is=68ab400b&hm=63a18deab3a22d022ab854005982f72fd9cfa77d68426b635803cc5f75d82725&",
+      images: [
+        "https://cdn.mos.cms.futurecdn.net/TNHyeyqTofRfpqVFMzb8QS.jpg"
+    ]
     }
     // Add more 'projects' category projects here
   ],
@@ -220,13 +286,18 @@ const projects = {
       title: "Lawin Server V1",
       description: "Fortnite backend, made by Lawin.",
       repo: "https://github.com/Lawin0129/LawinServer",
-      image: "https://placehold.co/64x64/9333ea/fff?text=V1"
+      image: "https://placehold.co/64x64/9333ea/fff?text=V1",
+      images: [
+        "https://placehold.co/400x200",
+        "https://placehold.co/400x200"
+      ]
     },
     {
       title: "Lawin Server V2",
       description: "LawinServer V2 is a fortnite backend written in Node.js that features an account system and xmpp.",
       repo: "https://github.com/Lawin0129/LawinServerV2",
       image: "https://placehold.co/64x64/6d28d9/fff?text=V2"
+      // No images for this
     }
     // Add more backend projects here
   ],
@@ -238,6 +309,42 @@ const projects = {
   ],
   tools: [
     // Add tools projects here
+  ],
+  builds: 
+  [
+    {
+      title: "Fortnite 1.8",
+      description: "One of the earliest versions of Fortnite.",
+      downloadLink: "https://builds.rebootfn.org/1.8.rar",
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_FrC0_lOL3H62-j9uuUR1cvSvZpRvUW3DPJRdbyakbK2aJDm6jdfN0l9gqLGmTtmeOQk&usqp=CAU",
+      images: [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdtwlmv8Pb2zEPG6PCiyBEW2hLWQ4LghC4IA&s",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQRovs4-9xBGPSpYora3Yo-N3JILUPxKpQ7g&s"
+      ]
+    },
+    {
+      title: "Fortnite 1.10",
+      description: "One of the earliest versions of Fortnite.",
+      downloadLink: "https://builds.rebootfn.org/1.10.rar",
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_FrC0_lOL3H62-j9uuUR1cvSvZpRvUW3DPJRdbyakbK2aJDm6jdfN0l9gqLGmTtmeOQk&usqp=CAU",
+      images: [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdtwlmv8Pb2zEPG6PCiyBEW2hLWQ4LghC4IA&s",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQRovs4-9xBGPSpYora3Yo-N3JILUPxKpQ7g&s"
+      ]
+    },
+    {
+      title: "Fortnite 2.4.2",
+      description: "One of the earliest versions of Fortnite.",
+      downloadLink: "https://builds.rebootfn.org/2.4.2.zip",
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_FrC0_lOL3H62-j9uuUR1cvSvZpRvUW3DPJRdbyakbK2aJDm6jdfN0l9gqLGmTtmeOQk&usqp=CAU",
+      images: [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdtwlmv8Pb2zEPG6PCiyBEW2hLWQ4LghC4IA&s",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQRovs4-9xBGPSpYora3Yo-N3JILUPxKpQ7g&s"
+      ]
+    },
+    {
+
+    }
   ]
 };
 
@@ -248,6 +355,7 @@ const tabs = [
   { id: "backend", label: "Backend" },
   { id: "launcher", label: "Launcher" },
   { id: "sdk", label: "SDK" },
+  { id: "builds", label: "Builds" },
   { id: "tools", label: "Tools" }
   // Settings tab will be rendered separately at the bottom
 ];
@@ -285,7 +393,8 @@ function SettingsPanel({ setTheme, currentTheme }) {
   const themes = [
     { name: "Black & Blue", gradient: "blue", colors: { from: "#2563eb", to: "#60a5fa", hover: "#3b82f6" } },
     { name: "Black & Red", gradient: "red", colors: { from: "#dc2626", to: "#f87171", hover: "#ef4444" } },
-    { name: "Black & Purple", gradient: "purple", colors: { from: "#9333ea", to: "#a78bfa", hover: "#a21caf" } }
+    { name: "Black & Purple", gradient: "purple", colors: { from: "#9333ea", to: "#a78bfa", hover: "#a21caf" } },
+    { name: "EpicGames", gradient: "epic", colors: { button: "#0078ff", panel: "#1a1a1a", cardBorder: "#0078ff" } }
   ];
   return (
     e('div', { className: "flex flex-col items-center space-y-4 p-4" },
@@ -298,8 +407,14 @@ function SettingsPanel({ setTheme, currentTheme }) {
             "w-full py-2 px-4 rounded-lg bg-gray-800 text-white transition-colors" +
             (currentTheme === theme.gradient ? " ring-2 ring-offset-2 ring-white" : ""),
           style: currentTheme === theme.gradient
-            ? { background: `linear-gradient(90deg, ${theme.colors.from}, ${theme.colors.to})`, color: "#fff" }
-            : undefined
+            ? (
+                theme.gradient === "epic"
+                  ? { background: theme.colors.button, color: "#fff" }
+                  : { background: `linear-gradient(90deg, ${theme.colors.from}, ${theme.colors.to})`, color: "#fff" }
+              )
+            : theme.gradient === "epic"
+              ? { background: "#23272e", color: "#fff" }
+              : undefined
         }, theme.name)
       )
     )
@@ -310,10 +425,14 @@ function SettingsPanel({ setTheme, currentTheme }) {
 
 function Sidebar({ activeTab, setActiveTab }) {
   const [activeIndex, setActiveIndex] = useState(null);
-  // Using activeIndex to track which button is hovered/active
-
+  // Get themeVars from window, fallback to blue if not present
+  const themeVars = window._themeVars || {
+    button: "#3b82f6",
+    panel: "#1a1a1a"
+  };
   return e('aside', {
-      className: "w-60 bg-black/80 relative flex flex-col p-4"
+      className: "w-60 bg-black/80 relative flex flex-col p-4",
+      style: { background: themeVars.panel }
     },
     e('h1', { className: "text-xl font-bold mb-8 text-white z-10 relative" }, "Project Hub"),
     e('nav', { className: "space-y-3 z-10 relative" },
@@ -353,7 +472,9 @@ function Sidebar({ activeTab, setActiveTab }) {
               if (activeIndex === index) setActiveIndex(null);
             }
           },
-          style: activeTab === tab.id ? { outline: `2px solid var(--theme-card-glow)` } : { outline: "none" }
+          style: activeTab === tab.id
+            ? { backgroundColor: themeVars.button, color: "#fff" }
+            : { backgroundColor: "transparent", color: "#fff" }
         },
           // Sidebar icon image instead of purple circle
           e('img', {
@@ -385,7 +506,9 @@ function Sidebar({ activeTab, setActiveTab }) {
         onClick: () => setActiveTab("settings"),
         onMouseEnter: () => setActiveIndex("settings"),
         onMouseLeave: () => setActiveIndex(null),
-        style: activeTab === "settings" ? { outline: `2px solid var(--theme-card-glow)` } : { outline: "none" }
+        style: activeTab === "settings"
+          ? { backgroundColor: themeVars.button, color: "#fff" }
+          : { backgroundColor: "transparent", color: "#fff" }
       },
         e('img', {
           src: tabIcons.settings,
@@ -401,9 +524,9 @@ function Sidebar({ activeTab, setActiveTab }) {
 
 const announcementsData = [
   {
-    image: "https://pbs.twimg.com/media/Gv5zL-FXMAA_x1p.jpg:large",
+    image: "https://pbs.twimg.com/media/GU-4R2BXYAAq07y.jpg:large",
     title: "Updates",
-    text: "New animations, and color theme changer."
+    text: "You can now download Fortnite builds! Check it out at 'Builds'."
   },
   {
     image: "https://pbs.twimg.com/media/FmIZIQmXEAMr3Bq.jpg:large",
@@ -518,7 +641,8 @@ function ProjectCard({ title, description, repo, discord, image, onClick }) {
     cursor: onClick ? "pointer" : undefined
   };
 
-  return e('div', {
+  return 
+('div', {
     ref,
     className: `w-[200px] bg-transparent rounded-2xl shadow-xl p-8 text-center relative outline-glow group flex flex-col justify-center items-center transition-all duration-200${active ? ' active' : ''}`,
     style: cardStyle,
@@ -542,10 +666,15 @@ function ProjectCard({ title, description, repo, discord, image, onClick }) {
       expanded || !showReadMore ? description : collapsedDesc
     ),
     showReadMore &&
-      e('button', {
-        onClick: (event) => { event.stopPropagation(); setExpanded(!expanded); },
-        className: "text-sm text-blue-400 mt-2 hover:underline"
-      }, e('span', { className: "text-white" }, expanded ? "Read Less" : "Read More")),
+  e('button', {
+    onClick: (event) => { event.stopPropagation(); setExpanded(!expanded); },
+    className: "text-sm mt-2 hover:underline",
+    style: {
+      background: "transparent",
+      padding: 0,
+      color: "#fff"
+    }
+  }, expanded ? "Read Less" : "Read More"),
     e('div', { className:"flex justify-center space-x-2 mt-2" },
       repo && e('a', {
         href:repo,
@@ -574,7 +703,8 @@ function ProjectCard({ title, description, repo, discord, image, onClick }) {
           style: { width: 20, height: 20, display: "inline-block", filter: "invert(1)" },
           className: "inline-block"
         })
-      )
+      ),
+      
     )
   );
 }
@@ -595,20 +725,145 @@ function ProjectGrid({ projects, onProjectClick }) {
   );
 }
 
+// Helper function to fetch Discord member count
+async function fetchDiscordMemberCount({ discord, guildId }) {
+  try {
+    let url = null;
+    if (guildId) {
+      url = `https://discord.com/api/guilds/${guildId}/widget.json`;
+    } else if (discord) {
+      const inviteCode = discord.split("discord.gg/")[1];
+      if (inviteCode) {
+        url = `https://discord.com/api/v9/invites/${inviteCode}?with_counts=true&with_expiration=true`;
+      }
+    }
+    if (!url) return { count: null };
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("Failed to fetch");
+    const data = await res.json();
+    if (data.approximate_member_count) return { count: data.approximate_member_count };
+    if (data.presence_count) return { count: data.presence_count };
+    if (Array.isArray(data.members)) return { count: data.members.length };
+    return { count: null };
+  } catch (err) {
+    console.error("Discord count error:", err);
+    return { count: null };
+  }
+}
+
+// Helper function to fetch GitHub repo stats
+async function fetchGitHubRepoStats(repoUrl) {
+  try {
+    if (!repoUrl) return { stars: null, forks: null, contributors: null };
+
+    const match = repoUrl.match(/github\.com\/([^/]+)\/([^/]+)/);
+    if (!match) return { stars: null, forks: null, contributors: null };
+
+    const owner = match[1];
+    const repo = match[2];
+
+    const repoRes = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
+    if (!repoRes.ok) throw new Error("Failed repo fetch");
+    const repoData = await repoRes.json();
+
+    const contribRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contributors?per_page=1&anon=true`);
+    let contribCount = null;
+    if (contribRes.ok) {
+      const contribLink = contribRes.headers.get("Link");
+      if (contribLink && contribLink.includes('rel="last"')) {
+        const lastPageMatch = contribLink.match(/&page=(\d+)>; rel="last"/);
+        if (lastPageMatch) contribCount = parseInt(lastPageMatch[1]);
+      } else {
+        const contribData = await contribRes.json();
+        contribCount = contribData.length;
+      }
+    }
+
+    return {
+      stars: repoData.stargazers_count ?? null,
+      forks: repoData.forks_count ?? null,
+      contributors: contribCount
+    };
+  } catch (err) {
+    console.error("GitHub API error:", err);
+    return { stars: null, forks: null, contributors: null };
+  }
+}
+
 // Side panel for project details
 function ProjectSidePanel({ project, onClose }) {
+  const { useState, useEffect, useRef } = React;
   const [visible, setVisible] = useState(false);
   const [shouldRender, setShouldRender] = useState(true);
+
+  // discord count state
+  const [memberCount, setMemberCount] = useState(null);
+  const [loadingCount, setLoadingCount] = useState(false);
+  const [countError, setCountError] = useState(null);
+
+  // GitHub stats state
+  const [githubStats, setGithubStats] = useState({ stars: null, forks: null, contributors: null });
+  const [loadingGitHub, setLoadingGitHub] = useState(false);
+
   const panelRef = useRef(null);
+
+  // Lightbox state for images
+  const [lightboxImage, setLightboxImage] = useState(null);
 
   // Animate in on mount
   useEffect(() => {
-    setShouldRender(true);
     setTimeout(() => setVisible(true), 10);
-    return () => {};
   }, []);
 
-  // Handle close: animate out, then unmount
+  // Load discord count whenever the selected project changes
+  useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      if (!project) return;
+      if (!project.discord && !project.guildId && !project.discordMemberCount) {
+        setMemberCount(null); return;
+      }
+      setLoadingCount(true);
+      setCountError(null);
+      try {
+        const { count } = await fetchDiscordMemberCount({
+          discord: project.discord,
+          guildId: project.guildId
+        });
+        if (!cancelled) {
+          if (typeof count === 'number') {
+            setMemberCount(count);
+          } else if (typeof project.discordMemberCount === 'number') {
+            // fallback to static if provided
+            setMemberCount(project.discordMemberCount);
+          } else {
+            setMemberCount(null);
+          }
+        }
+      } catch (e) {
+        if (!cancelled) setCountError('Unavailable');
+      } finally {
+        if (!cancelled) setLoadingCount(false);
+      }
+    }
+    load();
+    return () => { cancelled = true; };
+  }, [project]);
+
+  // Load GitHub stats whenever the selected project changes
+  useEffect(() => {
+    let cancelled = false;
+    async function loadGitHub() {
+      if (!project.repo) return;
+      setLoadingGitHub(true);
+      const stats = await fetchGitHubRepoStats(project.repo);
+      if (!cancelled) setGithubStats(stats);
+      setLoadingGitHub(false);
+    }
+    loadGitHub();
+    return () => { cancelled = true; };
+  }, [project]);
+
   const handleClose = () => {
     setVisible(false);
     setTimeout(() => {
@@ -617,66 +872,115 @@ function ProjectSidePanel({ project, onClose }) {
     }, 300);
   };
 
-  // If not rendering, don't show
   if (!shouldRender) return null;
 
-  return e('div', {
+  return React.createElement('div', {
     ref: panelRef,
     className:
-      "fixed top-0 right-0 h-full w-96 bg-transparent p-6 flex flex-col overflow-auto z-50 backdrop-blur-sm transition-transform duration-300 ease-in-out",
+      "fixed top-0 right-0 h-full w-96 bg-transparent p-6 flex flex-col z-50 backdrop-blur-sm transition-transform duration-300 ease-in-out overflow-y-auto",
     style: {
       boxShadow: "0 0 60px 0 rgba(59,130,246,0.12)",
-      transform: visible ? "translateX(0)" : "translateX(100%)",
-      pointerEvents: visible ? "auto" : "none"
+      transform: visible ? "translateX(0)" : "translateX(100%)"
     }
   },
-    e('div', { className: "relative flex flex-col flex-1" },
-      // Close button
-      e('button', {
+    React.createElement('div', { className: "relative flex flex-col flex-1" },
+      // Close
+      React.createElement('button', {
         onClick: handleClose,
         className: "absolute top-2 right-2 text-white bg-black/40 rounded-full w-8 h-8 flex items-center justify-center hover:bg-blue-700/60 outline-glow z-10"
-      }, e('span', { className: "text-2xl font-bold" }, "×")),
-      // Panel content with gradient/outline inside
-      e('div', { className: "flex flex-col items-center outline-glow active rounded-2xl p-4 mt-6 bg-black/30 relative" },
+      }, React.createElement('span', { className: "text-2xl font-bold" }, "×")),
+      // Content card
+      React.createElement('div', { className: "flex flex-col items-center outline-glow active rounded-2xl p-4 mt-6 bg-black/30 relative" },
         project.logo || project.image
-          ? e('img', {
+          ? React.createElement('img', {
               src: project.logo || project.image,
               alt: project.title + " logo",
               className: "w-20 h-20 rounded-xl mb-4 object-cover shadow-lg"
             })
           : null,
-        e('h2', { className: "text-2xl font-bold mb-2 text-white text-center" }, project.title),
-        e('p', { className: "mb-4 text-white text-center" }, project.description),
-        e('div', { className: "flex gap-3 mb-4" },
-          project.repo && e('a', {
-            href: project.repo,
-            target: "_blank",
-            rel: "noopener noreferrer",
-            className: "hover:text-blue-400"
-          }, e('img', {
+        React.createElement('h2', { className: "text-2xl font-bold mb-2 text-white text-center" }, project.title),
+        React.createElement('p', { className: "mb-4 text-white text-center" }, project.description),
+        // Images grid if present
+        project.images && project.images.length > 0 &&
+          React.createElement('div', { className: "grid grid-cols-1 gap-4 w-full mt-4" },
+            project.images.map((img, i) =>
+              React.createElement('img', {
+                key: i,
+                src: img,
+                alt: project.title + " screenshot " + (i+1),
+                className: "rounded-xl object-cover shadow-lg cursor-pointer",
+                onClick: () => setLightboxImage(img)
+              })
+            )
+          ),
+        React.createElement('div', { className: "flex gap-3 mb-4" },
+          project.repo && React.createElement('a', {
+            href: project.repo, target: "_blank", rel: "noopener noreferrer", className: "hover:text-blue-400"
+          }, React.createElement('img', {
             src: "https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/github.svg",
-            alt: "GitHub",
-            style: { width: 24, height: 24, filter: "invert(1)" }
+            alt: "GitHub", style: { width: 24, height: 24, filter: "invert(1)" }
           })),
-          project.discord && e('a', {
-            href: project.discord,
-            target: "_blank",
-            rel: "noopener noreferrer",
-            className: "hover:text-blue-400"
-          }, e('img', {
+          project.discord && React.createElement('a', {
+            href: project.discord, target: "_blank", rel: "noopener noreferrer", className: "hover:text-blue-400"
+          }, React.createElement('img', {
             src: "https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/discord.svg",
-            alt: "Discord",
-            style: { width: 24, height: 24, filter: "invert(1)" }
+            alt: "Discord", style: { width: 24, height: 24, filter: "invert(1)" }
           }))
-        ),
-        // Discord member count card
-        project.discordMemberCount && e('div', {
-          className: "outline-glow active bg-black/30 rounded-2xl p-4 mt-4 w-full text-center"
-        },
-          e('h3', { className: "text-lg font-bold text-white" }, "Discord Members"),
-          e('p', { className: "text-white text-lg" }, project.discordMemberCount)
         )
-      )
+      ),
+      // GitHub Stats card
+      (project.repo && (
+        React.createElement('div', { className: "outline-glow active bg-black/30 rounded-2xl p-4 mt-4 w-full text-center" },
+          React.createElement('h3', { className: "text-lg font-bold text-white mb-2" }, "GitHub Stats"),
+          React.createElement('p', { className: "text-white" }, loadingGitHub ? "Loading…" : `⭐ Stars: ${githubStats.stars ?? "Unknown"}`),
+          React.createElement('p', { className: "text-white" }, loadingGitHub ? "" : `🍴 Forks: ${githubStats.forks ?? "Unknown"}`),
+          React.createElement('p', { className: "text-white" }, loadingGitHub ? "" : `👥 Contributors: ${githubStats.contributors ?? "Unknown"}`),
+          React.createElement('button', {
+            onClick: async () => {
+              setLoadingGitHub(true);
+              const stats = await fetchGitHubRepoStats(project.repo);
+              setGithubStats(stats);
+              setLoadingGitHub(false);
+            },
+            className: "mt-3 px-3 py-1 rounded-lg bg-black/40 hover:bg-black/60 text-white text-sm"
+          }, "Refresh")
+        )
+      )),
+      // Discord Members card (separate)
+      (project.discord || project.guildId || typeof project.discordMemberCount === 'number') &&
+        React.createElement('div', { className: "outline-glow active bg-black/30 rounded-2xl p-4 mt-4 w-full text-center" },
+          React.createElement('h3', { className: "text-lg font-bold text-white mb-1" }, "Discord Members"),
+          loadingCount
+            ? React.createElement('p', { className: "text-white/80" }, "Loading…")
+            : (countError
+                ? React.createElement('p', { className: "text-white/70" }, "Unavailable")
+                : React.createElement('p', { className: "text-white text-xl" }, memberCount ?? "Unknown")
+              ),
+          React.createElement('button', {
+            onClick: async () => {
+              // manual refresh
+              setLoadingCount(true);
+              const { count } = await fetchDiscordMemberCount({
+                discord: project.discord,
+                guildId: project.guildId
+              });
+              setMemberCount(typeof count === 'number' ? count : (project.discordMemberCount ?? null));
+              setLoadingCount(false);
+            },
+            className: "mt-3 px-3 py-1 rounded-lg bg-black/40 hover:bg-black/60 text-white text-sm"
+          }, "Refresh")
+        )
+    ),
+    // Lightbox overlay for images
+    lightboxImage && React.createElement('div', {
+      className: "fixed inset-0 bg-black/80 flex items-center justify-center z-50",
+      onClick: () => setLightboxImage(null)
+    },
+      React.createElement('img', {
+        src: lightboxImage,
+        alt: "Expanded",
+        className: "max-w-full max-h-full rounded-xl shadow-2xl"
+      })
     )
   );
 }
@@ -702,7 +1006,10 @@ function App() {
       shadow: "rgba(59,130,246,0.3)",
       cardGlow: "rgba(59,130,246,0.3)",
       dotActive: "bg-blue-400",
-      dotInactive: "bg-blue-900"
+      dotInactive: "bg-blue-900",
+      button: "#3b82f6",
+      panel: "#1a1a1a",
+      cardBorder: "#3b82f6"
     },
     red: {
       gradientFrom: "#dc2626",
@@ -711,7 +1018,10 @@ function App() {
       shadow: "rgba(239,68,68,0.3)",
       cardGlow: "rgba(239,68,68,0.3)",
       dotActive: "bg-red-400",
-      dotInactive: "bg-red-900"
+      dotInactive: "bg-red-900",
+      button: "#ef4444",
+      panel: "#1a1a1a",
+      cardBorder: "#ef4444"
     },
     purple: {
       gradientFrom: "#9333ea",
@@ -720,10 +1030,27 @@ function App() {
       shadow: "rgba(168,139,250,0.3)",
       cardGlow: "rgba(168,139,250,0.3)",
       dotActive: "bg-purple-400",
-      dotInactive: "bg-purple-900"
+      dotInactive: "bg-purple-900",
+      button: "#a21caf",
+      panel: "#1a1a1a",
+      cardBorder: "#a21caf"
+    },
+    epic: {
+      gradientFrom: "#1a1a1a",
+      gradientTo: "#1a1a1a",
+      hover: "#0078ff",
+      shadow: "rgba(0,120,255,0.3)",
+      cardGlow: "rgba(0,120,255,0.3)",
+      dotActive: "bg-blue-500",
+      dotInactive: "bg-blue-900",
+      button: "#0078ff",
+      panel: "#1a1a1a",
+      cardBorder: "#0078ff"
     }
   };
   const themeVars = themeConfig[theme];
+  // Make themeVars globally accessible for Sidebar (for simplicity)
+  window._themeVars = themeVars;
 
   // Determine which projects list to show for grid
   let gridProjects = [];
@@ -733,6 +1060,7 @@ function App() {
   else if (activeTab === "sdk") gridProjects = projects.sdk;
   else if (activeTab === "projectz") gridProjects = projects.projects;
   else if (activeTab === "tools") gridProjects = projects.tools;
+  else if (activeTab === "builds") gridProjects = projects.builds;
 
   // For overlay/shrink effect
   const panelOpen = !!selectedProject;
@@ -745,6 +1073,10 @@ function App() {
     document.body.style.setProperty('--theme-shadow', themeVars.shadow);
     document.body.style.setProperty('--theme-card-glow', themeVars.cardGlow);
     document.documentElement.style.setProperty('--theme-card-glow', themeVars.cardGlow);
+    document.body.style.setProperty('--theme-panel', themeVars.panel);
+    document.body.style.setProperty('--theme-border', themeVars.cardBorder);
+    // Always use panel color as background
+    document.body.style.background = themeVars.panel;
   }, [theme, themeVars]);
 
   // Custom Announcement and ProjectCard with theme support
@@ -753,6 +1085,15 @@ function App() {
     const total = announcementsData.length;
     const [active, setActive] = useState(false);
     const ref = useRef(null);
+    // Animation state
+    const [prevIndex, setPrevIndex] = useState(0);
+    const [slideDir, setSlideDir] = useState(0); // 1: right, -1: left, 0: none
+    useEffect(() => {
+      if (currentIndex > prevIndex) setSlideDir(1);
+      else if (currentIndex < prevIndex) setSlideDir(-1);
+      else setSlideDir(0);
+      setPrevIndex(currentIndex);
+    }, [currentIndex]);
     const prev = () => setCurrentIndex((currentIndex - 1 + total) % total);
     const next = () => setCurrentIndex((currentIndex + 1) % total);
     const current = announcementsData[currentIndex];
@@ -775,37 +1116,50 @@ function App() {
         if (active) setActive(false);
       }
     };
+    // Slide direction: slide in from right if next, left if prev
+    // Set translateX to 0 when active, to 100% or -100% when inactive
+    // We'll use a key to force React to remount the announcement on index change
     return e('div', {
       ref,
-      className: `w-full h-full flex justify-center items-center relative outline-glow${active ? ' active' : ''}`,
-      onMouseMove: handleMouseMove,
-      onMouseLeave: () => setActive(false),
-      onMouseEnter: () => setActive(true),
+      className: `w-full h-full flex justify-center items-center relative`,
       style: {
         '--theme-gradient-from': themeVars.gradientFrom,
         '--theme-gradient-to': themeVars.gradientTo
       }
     },
-      e('div', { className: "relative max-w-4xl flex flex-col justify-center items-center space-y-6 w-full h-full px-6" },
-        e('img', { src: current.image, alt: current.title, className: "rounded-xl mx-auto max-w-full max-h-[60vh] object-contain" }),
-        e('h2', { className: "text-4xl font-bold text-white" }, current.title),
-        e('p', { className: "text-white text-lg max-w-3xl" }, current.text),
-        e('div', { className: "absolute top-1/2 left-4 -translate-y-1/2 cursor-pointer text-white select-none text-3xl font-bold", onClick: prev, role: "button", tabIndex: 0, onKeyDown: (e) => { if(e.key === 'Enter') prev(); } },
-          e('span', { className: "text-white" }, "‹")
-        ),
-        e('div', { className: "absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer text-white select-none text-3xl font-bold", onClick: next, role: "button", tabIndex: 0, onKeyDown: (e) => { if(e.key === 'Enter') next(); } },
-          e('span', { className: "text-white" }, "›")
-        ),
-        e('div', { className: "flex justify-center space-x-2 mt-6" },
-          announcementsData.map((_, idx) =>
-            e('span', {
-              key: idx,
-              className: `w-3 h-3 rounded-full cursor-pointer ${idx === currentIndex ? themeVars.dotActive : themeVars.dotInactive} text-white`,
-              onClick: () => setCurrentIndex(idx),
-              role: "button",
-              tabIndex: 0,
-              onKeyDown: (e) => { if(e.key === 'Enter') setCurrentIndex(idx); }
-            })
+      e('div', {
+        key: currentIndex,
+        className:
+          `w-full h-full flex justify-center items-center relative outline-glow transition-transform duration-500 ease-in-out${active ? ' active' : ''}`,
+        onMouseMove: handleMouseMove,
+        onMouseLeave: () => setActive(false),
+        onMouseEnter: () => setActive(true),
+        style: {
+          transform: `translateX(0)`,
+          // For accessibility, we don't animate on first render
+        }
+      },
+        e('div', { className: "relative max-w-4xl flex flex-col justify-center items-center space-y-6 w-full h-full px-6" },
+          e('img', { src: current.image, alt: current.title, className: "rounded-xl mx-auto max-w-full max-h-[60vh] object-contain" }),
+          e('h2', { className: "text-4xl font-bold text-white" }, current.title),
+          e('p', { className: "text-white text-lg max-w-3xl" }, current.text),
+          e('div', { className: "absolute top-1/2 left-4 -translate-y-1/2 cursor-pointer text-white select-none text-3xl font-bold", onClick: prev, role: "button", tabIndex: 0, onKeyDown: (e) => { if(e.key === 'Enter') prev(); } },
+            e('span', { className: "text-white" }, "‹")
+          ),
+          e('div', { className: "absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer text-white select-none text-3xl font-bold", onClick: next, role: "button", tabIndex: 0, onKeyDown: (e) => { if(e.key === 'Enter') next(); } },
+            e('span', { className: "text-white" }, "›")
+          ),
+          e('div', { className: "flex justify-center space-x-2 mt-6" },
+            announcementsData.map((_, idx) =>
+              e('span', {
+                key: idx,
+                className: `w-3 h-3 rounded-full cursor-pointer ${idx === currentIndex ? themeVars.dotActive : themeVars.dotInactive} text-white`,
+                onClick: () => setCurrentIndex(idx),
+                role: "button",
+                tabIndex: 0,
+                onKeyDown: (e) => { if(e.key === 'Enter') setCurrentIndex(idx); }
+              })
+            )
           )
         )
       )
@@ -817,6 +1171,7 @@ function App() {
     const [active, setActive] = useState(false);
     const [expanded, setExpanded] = useState(false);
     const ref = useRef(null);
+    // Border should be transparent unless cursor is close
     const handleMouseMove = (event) => {
       if (!ref.current) return;
       const rect = ref.current.getBoundingClientRect();
@@ -825,26 +1180,24 @@ function App() {
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height / 2;
       const dist = Math.hypot(centerX - x, centerY - y);
-      if (dist <= 100) {
-        if (!active) setActive(true);
-      } else {
-        if (active) setActive(false);
-      }
+      setActive(dist <= 100);
     };
     const showReadMore = props.description && props.description.length > 20;
     const collapsedDesc = props.description ? props.description.slice(0, 20) + "..." : "";
-    const cardStyle = {
-      transition: "min-height 0.2s, box-shadow 0.2s",
+    // Accept style prop for slide-in animation
+    const cardStyle = Object.assign({
+      transition: "transform 0.5s ease-in-out, min-height 0.2s, box-shadow 0.2s",
       minHeight: expanded ? "8.5em" : "6.5em",
       cursor: props.onClick ? "pointer" : undefined,
       '--theme-gradient-from': themeVars.gradientFrom,
-      '--theme-gradient-to': themeVars.gradientTo
-    };
+      '--theme-gradient-to': themeVars.gradientTo,
+      border: active ? `2px solid ${themeVars.cardBorder}` : `2px solid transparent`
+    }, props.style || {});
     return e('div', {
       ref,
       className: `w-[200px] bg-transparent rounded-2xl shadow-xl p-8 text-center relative outline-glow group flex flex-col justify-center items-center transition-all duration-200${active ? ' active' : ''}`,
       style: cardStyle,
-      onMouseEnter: () => setActive(true),
+      onMouseEnter: (e) => setActive(true),
       onMouseLeave: () => setActive(false),
       onMouseMove: handleMouseMove,
       onClick: props.onClick
@@ -867,8 +1220,16 @@ function App() {
         e('button', {
           onClick: (event) => { event.stopPropagation(); setExpanded(!expanded); },
           className: "text-sm mt-2 hover:underline",
-          style: { color: themeVars.gradientFrom }
-        }, e('span', { className: "text-white" }, expanded ? "Read Less" : "Read More")),
+          style: {
+            border: "none",
+            outline: "none",
+            background: "transparent",
+            padding: 0,
+            margin: 0,
+            color: "#fff",
+            boxShadow: "none"
+          }
+        }, expanded ? "Read Less" : "Read More"),
       e('div', { className:"flex justify-center space-x-2 mt-2" },
         props.repo && e('a', {
           href:props.repo,
@@ -898,6 +1259,25 @@ function App() {
             className: "inline-block"
           })
         )
+      ),
+      // Download button (if downloadLink is provided)
+      props.downloadLink && e('div', { className: "mt-2" },
+        e('button', {
+          onClick: (event) => {
+            event.stopPropagation();
+            const a = document.createElement('a');
+            a.href = props.downloadLink;
+            a.download = '';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+          },
+          className: "px-3 py-1 rounded-lg text-white text-sm",
+          style: {
+            backgroundColor: themeVars.button,
+            border: `2px solid ${themeVars.cardBorder}`
+          }
+        }, "Download")
       )
     );
   }
@@ -910,14 +1290,21 @@ function App() {
         setSelectedProject(project);
       }, 20);
     };
+    // Slide-in animation for grid container: cards slide in one by one
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => { setMounted(true); }, []);
     return e('div', {
-      className: "flex flex-wrap justify-start gap-2"
+      className: "flex flex-wrap justify-start gap-4",
     },
       projects.map((p, i) =>
         e(ThemedProjectCard, {
           ...p,
           key: i,
-          onClick: onProjectClick ? (() => handleCardClick(p)) : undefined
+          onClick: onProjectClick ? (() => handleCardClick(p)) : undefined,
+          style: {
+            transform: mounted ? 'translateX(0)' : 'translateX(100%)',
+            transition: `transform 0.5s ease-out ${i * 0.1}s`
+          }
         })
       )
     );
@@ -929,13 +1316,20 @@ function App() {
   }
 
   // Main return
-  return e('div', { className: "flex h-screen text-white relative", style: { '--theme-gradient-from': themeVars.gradientFrom, '--theme-gradient-to': themeVars.gradientTo } },
+  return e('div', {
+      className: "flex h-screen text-white relative",
+      style: {
+        '--theme-gradient-from': themeVars.gradientFrom,
+        '--theme-gradient-to': themeVars.gradientTo
+      }
+    },
     e(Sidebar, { activeTab, setActiveTab }),
     e('main', {
       className:
-        "flex-1 overflow-y-auto p-8 flex flex-col gap-2 transition-all duration-300" +
-        (panelOpen ? " scale-95 blur-sm pointer-events-none select-none opacity-70" : ""),
-      style: panelOpen ? { filter: "blur(2px)", transition: "all 0.3s" } : {}
+        "flex-1 overflow-y-auto p-8 flex flex-col gap-2 transition-all duration-300",
+      style: panelOpen
+        ? { transform: "scale(0.97)", filter: "blur(2px)", transition: "all 0.3s" }
+        : { transform: "scale(1)", filter: "blur(0)" }
     },
       activeTab === "settings"
         ? e(ThemedSettingsPanel, { setTheme })
