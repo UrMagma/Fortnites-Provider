@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fortnite Modding Vault</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<style>
+body { background: #000; position: relative; z-index: 1; }
+/* Global page glow overlay */
+/* Blue glow overlay */
+.page-glow-overlay {
+  pointer-events: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  background: radial-gradient(
+    circle at var(--x,50%) var(--y,50%),
+    rgba(59,130,246,0.08) 0%,
+    rgba(37,99,235,0.05) 40%,
+    transparent 80%
+  );
+  transition: background-position 0.2s;
+}
+/* Outline glow for cards and buttons */
+.outline-glow {
+  position: relative;
+  z-index: 1;
+}
+.outline-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px; /* thickness of the outline */
+  background: radial-gradient(
+    circle at var(--x, 100%) var(--y, 100%),
+    rgba(59,130,246,0.3) 0%,
+    rgba(37,99,235,0.2) 40%,
+    transparent 80%
+  );
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.outline-glow.active::before {
+  opacity: 1;
+}
+/* Project Card and Button with dark gray borders, no gradient glow */
+.card-gradient-border {
+  border-radius: 1.5rem;
+  background-clip: padding-box;
+  position: relative;
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  background-color: transparent;
+  isolation: isolate;
+  -webkit-mask-composite: exclude;
+  mask-composite: exclude;
+  -webkit-mask-composite: exclude;
+  position: relative;
+  z-index: 1;
+}
+/* Removed .card-glow-overlay from buttons and cards */
+/* Button styles */
+button.w-full.text-left {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-radius: 0.75rem; /* normal rounded corners */
+  overflow: visible; /* remove overflow hidden to prevent pill effect */
+  background-color: transparent;
+  isolation: isolate;
+  -webkit-mask-composite: exclude;
+  mask-composite: exclude;
+  -webkit-mask-composite: exclude;
+  position: relative;
+  z-index: 1;
+}
+/* Remove group hover pill effect */
+/* Sidebar button icon */
+.sidebar-icon-img {
+  width: 20px;
+  height: 20px;
+  border-radius: 0.5rem;
+  object-fit: cover;
+  background: transparent 95%;
+  flex-shrink: 0;
+  margin-right: 0.75rem;
+}
+/* Remove previous full sidebar glow, and add partial right-side glow */
+.sidebar-right-glow {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(0, 149, 255, 0.6) 100%, rgba(0, 149, 255, 0.4) 100%, rgba(0, 149, 255, 0.6) 100%);
+  filter: blur(4px);
+  pointer-events: none;
+  transition: background-position 0.3s ease;
+  background-size: 100% 200%;
+  z-index: 3;
+}
+/* Remove sidebar right border */
+aside {
+  border-right: none !important;
+}
+</style>
+</head>
+<body class="bg-black text-white">
+<div class="page-glow-overlay"></div>
+<div id="root" style="position: relative; z-index: 1;"></div>
+<script>
+const e = React.createElement;
+const { useState, useEffect, useRef } = React;
+
+/* Data */
+// ==========================
+// How to add new projects:
+// ==========================
+// - Each key in the 'projects' object is a category, e.g. 'dll', 'backend', 'launcher', 'sdk', 'tools', etc.
+// - To add a new project to a category, add a new object to the corresponding array.
+// - Each project object can have:
+//   - title: String (required)
+//   - description: String (required)
+//   - repo: String (optional, URL to repository)
+//   - discord: String (optional, URL to Discord)
+//
+// Example: Adding new projects to multiple categories:
+//
+// projects.dll.push({
+//   title: "Another DLL",
+//   description: "Description for another DLL project.",
+//   repo: "https://github.com/example/another-dll",
+//   discord: "https://discord.gg/another"
+// });
+//
+// projects.backend.push({
+//   title: "Backend Project Example",
+//   description: "A backend for Fortnite mods.",
+//   repo: "https://github.com/example/backend",
+//   discord: "https://discord.gg/backend"
+// });
+//
+// - Projects added in this way will automatically show in the UI under their category tab.
+// - You can add as many projects as you want to each category.
+//
+// ==========================
+const projects = {
+  dll: [
+    {
+      title: "Fortnite OG DLL",
+      description: "A working DLL for OG Fortnite modding.",
+      repo: "https://github.com/example/dll",
+      discord: "https://discord.gg/example",
+      image: "https://placehold.co/64x64/8a2be2/fff?text=DLL"
+    }
+    // Add more DLL projects here
+  ],
+  project: [
+    {
+      title: "Project Reboot",
+      description: "Made by Milxnor, and many others.",
+      repo: "https://github.com/Milxnor/Project-Reboot-3.0/tree/master",
+      discord: "https://discord.gg/H9sGkxBThS",
+      image: "https://placehold.co/64x64/7c3aed/fff?text=PR"
+    }
+    // Add more 'projects' category projects here
+  ],
+  backend: [
+    {
+      title: "Lawin Server V1",
+      description: "Fortnite backend, made by Lawin.",
+      repo: "https://github.com/Lawin0129/LawinServer",
+      image: "https://placehold.co/64x64/9333ea/fff?text=V1"
+    },
+    {
+      title: "Lawin Server V2",
+      description: "LawinServer V2 is a fortnite backend written in Node.js that features an account system and xmpp.",
+      repo: "https://github.com/Lawin0129/LawinServerV2",
+      image: "https://placehold.co/64x64/6d28d9/fff?text=V2"
+    }
+    // Add more backend projects here
+  ],
+  launcher: [
+    // Add launcher projects here
+  ],
+  sdk: [
+    // Add SDK projects here
+  ],
+  tools: [
+    // Add tools projects here
+  ]
+};
+
+const tabs = [
+  { id: "announcements", label: "Announcements" },
+  { id: "projects", label: "Projects" },
+  { id: "dll", label: "DLL" },
+  { id: "backend", label: "Backend" },
+  { id: "launcher", label: "Launcher" },
+  { id: "sdk", label: "SDK" },
+  { id: "tools", label: "Tools" }
+];
+
+/* Hook for page-level cursor-follow glow */
+function usePageGlow() {
+  useEffect(() => {
+    const overlay = document.querySelector('.page-glow-overlay');
+    if (!overlay) return;
+    const onMove = (e) => {
+      const x = (e.clientX / window.innerWidth) * 100;
+      const y = (e.clientY / window.innerHeight) * 100;
+      overlay.style.setProperty('--x', x + '%');
+      overlay.style.setProperty('--y', y + '%');
+    };
+    window.addEventListener('mousemove', onMove);
+    return () => window.removeEventListener('mousemove', onMove);
+  }, []);
+}
+
+/* Components */
+// Map tab id to example icon URL (replace with real images later)
+const tabIcons = {
+  announcements: "https://img.icons8.com/pastel-glyph/64/FFFFFF/bullhorn-megaphone--v2.png",
+  dll: "https://img.icons8.com/ios-filled/50/FFFFFF/dll.png",
+  backend: "https://img.icons8.com/ios-filled/100/FFFFFF/code.png",
+  launcher: "https://img.icons8.com/ios-filled/100/FFFFFF/missile.png",
+  sdk: "https://img.icons8.com/external-tal-revivo-light-tal-revivo/96/FFFFFF/external-skd-badge-logotype-isolated-on-white-background-development-light-tal-revivo.png",
+  tools: "https://img.icons8.com/ios-filled/100/FFFFFF/maintenance.png",
+  projects: "https://img.icons8.com/ios-filled/100/FFFFFF/ms-project.png"
+};
+
+// Removed useSidebarGlow and sidebar partial glow logic
+
+function Sidebar({ activeTab, setActiveTab }) {
+  const [activeIndex, setActiveIndex] = useState(null);
+  // Using activeIndex to track which button is hovered/active
+
+  return e('aside', {
+      className: "w-60 bg-black/80 relative flex flex-col p-4"
+    },
+    e('h1', { className: "text-xl font-bold mb-8 text-white z-10 relative" }, "Project Hub"),
+    e('nav', { className: "space-y-3 z-10 relative" },
+      tabs.map((tab, index) => {
+        const isActive = activeIndex === index;
+        return e('button', {
+          key: tab.id,
+          className: `w-full text-left p-3 rounded-lg relative group bg-transparent flex items-center outline-glow${isActive ? ' active' : ''}`,
+          onClick: ()=>setActiveTab(tab.id),
+          onMouseEnter: () => setActiveIndex(index),
+          onMouseLeave: () => setActiveIndex(null),
+          onMouseMove: (event) => {
+            const rect = event.currentTarget.getBoundingClientRect();
+            const x = event.clientX;
+            const y = event.clientY;
+            // Calculate distance to element center
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            const dist = Math.hypot(centerX - x, centerY - y);
+            if (dist <= 100) {
+              if (activeIndex !== index) setActiveIndex(index);
+            } else {
+              if (activeIndex === index) setActiveIndex(null);
+            }
+          }
+        },
+          // Sidebar icon image instead of purple circle
+          e('img', {
+            src: tabIcons[tab.id] || "https://placehold.co/20x20",
+            alt: "",
+            className: "sidebar-icon-img"
+          }),
+          e('span', { className:"relative z-10 text-white" }, tab.label)
+        )
+      })
+    ),
+    e('div', { className: "sidebar-right-glow" })
+  );
+}
+
+const announcementsData = [
+  {
+    image: "https://pbs.twimg.com/media/GEfvKqdWAAEkQd5.jpg:large",
+    title: "Leak",
+    text: "Welcome to Project Hub, the place to get everything."
+  },
+  {
+    image: "https://pbs.twimg.com/media/FmIZIQmXEAMr3Bq.jpg:large",
+    title: "Ack",
+    text: "We are currently not public. So either leaked or beta."
+  },
+  {
+    image: "https://www.therisingnews.com/wp-content/uploads/2024/03/GILT9hCWAAA-EtR.jpeg",
+    title: "Reminder",
+    text: "If you'd like to add a project please add me on discord @opensync"
+  }
+];
+
+function Announcement() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const total = announcementsData.length;
+  const [active, setActive] = useState(false);
+  const ref = useRef(null);
+
+  const prev = () => {
+    setCurrentIndex((currentIndex - 1 + total) % total);
+  };
+
+  const next = () => {
+    setCurrentIndex((currentIndex + 1) % total);
+  };
+
+  const current = announcementsData[currentIndex];
+
+  const handleMouseMove = (event) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const x = event.clientX;
+    const y = event.clientY;
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const dist = Math.hypot(centerX - x, centerY - y);
+    if (dist <= 100) {
+      if (!active) setActive(true);
+      // Update CSS variables for gradient position
+      const relX = x - rect.left;
+      const relY = y - rect.top;
+      ref.current.style.setProperty('--x', relX + 'px');
+      ref.current.style.setProperty('--y', relY + 'px');
+    } else {
+      if (active) setActive(false);
+    }
+  };
+
+  return e('div', {
+    ref,
+    className: `w-full h-full flex justify-center items-center relative outline-glow${active ? ' active' : ''}`,
+    onMouseMove: handleMouseMove,
+    onMouseLeave: () => setActive(false),
+    onMouseEnter: () => setActive(true)
+  },
+    e('div', { className: "relative max-w-4xl flex flex-col justify-center items-center space-y-6 w-full h-full px-6" },
+      e('img', { src: current.image, alt: current.title, className: "rounded-xl mx-auto max-w-full max-h-[60vh] object-contain" }),
+      e('h2', { className: "text-4xl font-bold text-white" }, current.title),
+      e('p', { className: "text-white text-lg max-w-3xl" }, current.text),
+      e('div', { className: "absolute top-1/2 left-4 -translate-y-1/2 cursor-pointer text-white select-none text-3xl font-bold", onClick: prev, role: "button", tabIndex: 0, onKeyDown: (e) => { if(e.key === 'Enter') prev(); } },
+        e('span', { className: "text-white" }, "‹")
+      ),
+      e('div', { className: "absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer text-white select-none text-3xl font-bold", onClick: next, role: "button", tabIndex: 0, onKeyDown: (e) => { if(e.key === 'Enter') next(); } },
+        e('span', { className: "text-white" }, "›")
+      ),
+      e('div', { className: "flex justify-center space-x-2 mt-6" },
+        announcementsData.map((_, idx) =>
+          e('span', {
+            key: idx,
+            className: `w-3 h-3 rounded-full cursor-pointer ${idx === currentIndex ? 'bg-blue-400' : 'bg-blue-900'} text-white`,
+            onClick: () => setCurrentIndex(idx),
+            role: "button",
+            tabIndex: 0,
+            onKeyDown: (e) => { if(e.key === 'Enter') setCurrentIndex(idx); }
+          })
+        )
+      )
+    )
+  );
+}
+
+function ProjectCard({ title, description, repo, discord, image }) {
+  const [active, setActive] = useState(false);
+  const [expanded, setExpanded] = useState(false); // Track expansion
+  const ref = useRef(null);
+
+  const handleMouseMove = (event) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const x = event.clientX;
+    const y = event.clientY;
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const dist = Math.hypot(centerX - x, centerY - y);
+    if (dist <= 100) {
+      if (!active) setActive(true);
+    } else {
+      if (active) setActive(false);
+    }
+  };
+
+  // Collapse if description is longer than 20 chars
+  const showReadMore = description && description.length > 20;
+  // Only show first 20 chars + ... when collapsed
+  const collapsedDesc = description ? description.slice(0, 20) + "..." : "";
+
+  // Animate height for expand/collapse and allow layout to reflow
+  // Use min-h for consistent collapsed height and let grow naturally when expanded
+  // Tailwind: min-h-[2.5em] for collapsed, min-h-0 for expanded
+  // We'll use style to animate height
+  const cardStyle = {
+    transition: "min-height 0.2s, box-shadow 0.2s",
+    minHeight: expanded ? "8.5em" : "6.5em"
+  };
+
+  return e('div', {
+    ref,
+    // Set fixed width and remove mx-auto for grid alignment
+    className: `w-[200px] bg-transparent rounded-2xl shadow-xl p-8 text-center relative outline-glow group flex flex-col justify-center items-center transition-all duration-200${active ? ' active' : ''}`,
+    style: cardStyle,
+    onMouseEnter: () => setActive(true),
+    onMouseLeave: () => setActive(false),
+    onMouseMove: handleMouseMove
+  },
+    image && e('img', {
+      src: image,
+      alt: title + " logo",
+      className: "w-16 h-16 mx-auto rounded mb-2 object-cover"
+    }),
+    e('h3', { className:"text-2xl font-bold mb-4 text-white" }, title),
+    e('p', {
+      className:"text-white mb-4 transition-all duration-200",
+      style: expanded || !showReadMore
+        ? {}
+        : { overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', minHeight: '1.75em' }
+    },
+      expanded || !showReadMore ? description : collapsedDesc
+    ),
+    showReadMore &&
+      e('button', {
+        onClick: () => setExpanded(!expanded),
+        className: "text-sm text-blue-400 mt-2 hover:underline"
+      }, e('span', { className: "text-white" }, expanded ? "Read Less" : "Read More")),
+    e('div', { className:"flex justify-center space-x-2 mt-2" },
+      repo && e('a', {
+        href:repo,
+        target:"_blank",
+        rel:"noopener noreferrer",
+        className:"flex items-center space-x-2 hover:text-blue-400"
+      },
+        e('img', {
+          src: "https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/github.svg",
+          alt: "GitHub",
+          style: { width: 20, height: 20, display: "inline-block", filter: "invert(1)" },
+          className: "inline-block"
+        })
+      ),
+      discord && e('a', {
+        href:discord,
+        target:"_blank",
+        rel:"noopener noreferrer",
+        className:"flex items-center space-x-2 hover:text-blue-400"
+      },
+        e('img', {
+          src: "https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/discord.svg",
+          alt: "Discord",
+          style: { width: 20, height: 20, display: "inline-block", filter: "invert(1)" },
+          className: "inline-block"
+        })
+      )
+    )
+  );
+}
+
+function ProjectGrid({ projects }) {
+  // Align cards to start right next to sidebar and flow left to right, with tight gap,
+  // wrap to next line as needed, and cards close together.
+  return e('div', {
+    className: "flex flex-wrap justify-start gap-2"
+  },
+    projects.map((p, i) => e(ProjectCard, { ...p, key: i }))
+  );
+}
+
+/* App */
+function App() {
+  usePageGlow();
+  const [activeTab, setActiveTab] = useState("announcements");
+  return e('div', { className: "flex h-screen text-white" },
+    e(Sidebar, { activeTab, setActiveTab }),
+    e('main', {
+      className: "flex-1 overflow-y-auto p-8 flex flex-col gap-2"
+    },
+      activeTab === "announcements" ? e(Announcement) :
+        activeTab === "dll" ? e(ProjectGrid, { projects: projects.dll}) :
+        activeTab === "backend" ? e(ProjectGrid, { projects: projects.backend }) :
+        activeTab === "launcher" ? e(ProjectGrid, { projects: projects.launcher }) :
+        activeTab === "sdk" ? e(ProjectGrid, { projects: projects.sdk }) :
+        activeTab === "tools" ? e(ProjectGrid, { projects: projects.tools }) : null
+    )
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(e(App));
+</script>
+</body>
+</html>
