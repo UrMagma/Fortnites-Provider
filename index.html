@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fortnite Modding Vault</title>
@@ -253,7 +258,7 @@ const projects = {
     },
     {
       title: "Era",
-      description: "Project Era, the oldest hosting server. Made by dani, and more.",
+      description: "Project Era, the oldest hosting server. Made by dani, and Benji.",
       discord: "https://discord.gg/erafn",
       image: "https://cdn2.steamgriddb.com/grid/7eb374c4c89c32d0fa63c2b4af5eefdc.png"
     },
@@ -261,15 +266,41 @@ const projects = {
       title: "Aera",
       description: "Join now and relieve the Ch1 S2 just like it was in 2017!",
       discord: "https://discord.gg/sMFSe3zuPY",
-      image: "https://cdn.discordapp.com/attachments/1409221127993032854/1409222683840872598/Aera.png?ex=68ac9865&is=68ab46e5&hm=70b293069add9e43725921c1d0f470d7f99c2e9c9ee0eecb4fa0b677f200db3c&"
+      image: "https://cdn.discordapp.com/attachments/1409221127993032854/1409222683840872598/Aera.png?ex=68ac9865&is=68ab46e5&hm=70b293069add9e43725921c1d0f470d7f99c2e9c9ee0eecb4fa0b677f200db3c&",
+      images: [
+        "https://images2.minutemediacdn.com/image/upload/c_crop,w_1280,h_720,x_0,y_0/c_fill,w_620,ar_16:9,f_auto,q_auto,g_auto/images/voltaxMediaLibrary/mmsport/esports_illustrated/01jeefxncm45ckq4m8pe.jpg"
+      ]
     },
     {
-      title: "NL Hybrid",
-      description: "A Fortnite hybrid server with unrealesed skins, every cosmetic, and more.",
+      title: "Aeris",
+      description: "Aeris is an OGFN emulator that hosts the best season, Chapter 2 Season 8, Will we see you on the Aeris Battle Bus?",
+      discord: "discord.gg/aerisfn",
+      image: "https://cdn.discordapp.com/attachments/1405399419813232650/1409242464170147983/1000085881-removebg-preview.png?ex=68acaad1&is=68ab5951&hm=c20122c7c8be0a02be43b6c6c5b579c63a3dd55b56053d893a74324cd47ab45c&"
+    },
+    {
+      title: "BeyondMP",
+      description: "Beyond Chapter 2 Season 2",
+      discord: "https://discord.gg/Cmjx4Epp",
+      image: "https://cdn.discordapp.com/attachments/1394013830127812698/1409231876098359497/IMG_6942.png?ex=68aca0f5&is=68ab4f75&hm=90bd9c163854b36ada1667440d0a60e793a5eb7b98a3f39816cd609a7441878f&"
+    },
+    {
+      title: "Project OldNite",
+      description: "Friendly, with server hosting on early chapter one seasons. Testers are needed, to test dm @firetog2.0 on discord.",
+      discord: "https://discord.gg/HAZy6SHya4",
+      image: "https://cdn.discordapp.com/attachments/1409328839972225117/1409330101304295484/ChatGPT_Image_5_aout_2025_19_20_14.png?ex=68acfc70&is=68abaaf0&hm=809a9a6a3bce924d69b45e3bdabff0cae4c2af097c05679c1c1768991f448f86&"
+    },
+    {
+      title: "Mercury",
+      description: "Fortnite STW Mod",
       discord: "https://discord.gg/pEwDG9Wj",
-      image: ""
-    }
-    ,
+      image: "https://cdn.discordapp.com/attachments/1409100263377207306/1409367038987735070/image.png?ex=68ad1ed6&is=68abcd56&hm=6063126d8e8cf6b8e251cf48d723437d8951ce78f83948bf00e48a035cc44b7b&"
+    },
+    {
+      title: "Lunar",
+      description: "An OG Fortnite server, that currently host the version 15.30 in EU and NA 24/7!",
+      discord: "https://discord.gg/qnerZD2k2B",
+      image: "https://cdn.discordapp.com/attachments/1394080230414745620/1409327973907173537/LuxorNrgrgewLogoV1.png?ex=68acfa75&is=68aba8f5&hm=62277c72ac2f10e2a1c4bea3c6d9a04d14ae8211e65fcc6fcc61279470da0eeb&"
+    },
     {
       title: "Apollo",
       description: "Relieve Chapter 2 Season 1 Fortnite again using ApolloMP!",
@@ -532,12 +563,12 @@ const announcementsData = [
   {
     image: "https://pbs.twimg.com/media/GU-4R2BXYAAq07y.jpg:large",
     title: "Updates",
-    text: "You can now download Fortnite builds! Check it out at 'Builds'."
+    text: "More projects, Basic IDE for source codes, what else?"
   },
   {
     image: "https://pbs.twimg.com/media/FmIZIQmXEAMr3Bq.jpg:large",
     title: "Ack",
-    text: "Discord Member Count, card is currently broken."
+    text: "Our content is limited for now, we are working very hard to get as much as possible."
   },
   {
     image: "https://www.therisingnews.com/wp-content/uploads/2024/03/GILT9hCWAAA-EtR.jpeg",
@@ -796,7 +827,27 @@ async function fetchGitHubRepoStats(repoUrl) {
   }
 }
 
-// Side panel for project details
+// Helper: get Prism language class from filename
+function getLanguage(fileName) {
+  if (!fileName) return "language-none";
+  const ext = fileName.split('.').pop().toLowerCase();
+  if (ext === "js") return "language-javascript";
+  if (ext === "jsx") return "language-javascript";
+  if (ext === "ts") return "language-typescript";
+  if (ext === "tsx") return "language-typescript";
+  if (ext === "py") return "language-python";
+  if (["cpp", "cc", "cxx", "hpp", "h", "c"].includes(ext)) return "language-cpp";
+  if (ext === "html" || ext === "htm") return "language-html";
+  if (ext === "css" || ext === "scss" || ext === "sass" || ext === "less") return "language-css";
+  if (ext === "json") return "language-json";
+  if (ext === "md") return "language-markdown";
+  if (ext === "sh" || ext === "bash" || ext === "zsh") return "language-bash";
+  if (ext === "xml") return "language-markup";
+  if (ext === "yml" || ext === "yaml") return "language-yaml";
+  return "language-none";
+}
+
+// Side panel for project details with IDE/folder navigation
 function ProjectSidePanel({ project, onClose }) {
   const { useState, useEffect, useRef } = React;
   const [visible, setVisible] = useState(false);
@@ -815,6 +866,49 @@ function ProjectSidePanel({ project, onClose }) {
 
   // Lightbox state for images
   const [lightboxImage, setLightboxImage] = useState(null);
+
+  // IDE overlay state (full screen)
+  const [showIDEFull, setShowIDEFull] = React.useState(false);
+  const [files, setFiles] = React.useState([]);
+  const [selectedFile, setSelectedFile] = React.useState(null);
+  const [fileContent, setFileContent] = React.useState("");
+  const [currentPath, setCurrentPath] = React.useState("");
+  const [pathStack, setPathStack] = React.useState([]);
+
+  // Helper: fetch repo files (with path)
+  async function fetchRepoFiles(repoUrl, path = "") {
+    try {
+      const parts = repoUrl.split("/");
+      const owner = parts[parts.length - 2];
+      const repo = parts[parts.length - 1];
+      const url = path
+        ? `https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponent(path)}`
+        : `https://api.github.com/repos/${owner}/${repo}/contents`;
+      const res = await fetch(url);
+      const data = await res.json();
+      setFiles(Array.isArray(data) ? data : []);
+      setCurrentPath(path);
+      setSelectedFile(null);
+      setFileContent("");
+    } catch (err) {
+      console.error("Error fetching repo files:", err);
+      setFiles([]);
+    }
+  }
+  // Helper: fetch file content
+  async function fetchFileContent(file) {
+    try {
+      const res = await fetch(file.download_url);
+      const text = await res.text();
+      setFileContent(text);
+      setSelectedFile(file);
+      if (window.Prism) {
+        setTimeout(() => Prism.highlightAll(), 0);
+      }
+    } catch (err) {
+      console.error("Error fetching file:", err);
+    }
+  }
 
   // Animate in on mount
   useEffect(() => {
@@ -870,6 +964,49 @@ function ProjectSidePanel({ project, onClose }) {
     return () => { cancelled = true; };
   }, [project]);
 
+  // When opening code, open full IDE overlay and load files
+  function handleOpenCode() {
+    setShowIDEFull(true);
+    setCurrentPath("");
+    setPathStack([]);
+    fetchRepoFiles(project.repo, "");
+  }
+
+  // Breadcrumb segments for currentPath
+  function getBreadcrumbSegments(path) {
+    if (!path) return [];
+    const segments = path.split("/").filter(Boolean);
+    let acc = "";
+    return segments.map((seg, idx) => {
+      acc += (idx === 0 ? "" : "/") + seg;
+      return { name: seg, path: acc };
+    });
+  }
+
+  // Breadcrumb click: go to that path (pop stack)
+  function handleBreadcrumbClick(idx, segments) {
+    const seg = segments[idx];
+    // New pathStack: up to idx
+    setPathStack(segments.slice(0, idx + 1).map(s => s.path));
+    fetchRepoFiles(project.repo, seg.path);
+  }
+
+  // Folder click: push to stack
+  function handleDirClick(file) {
+    setPathStack([...pathStack, file.path]);
+    fetchRepoFiles(project.repo, file.path);
+  }
+
+  // Up one folder
+  function handleUpOne() {
+    if (!currentPath) return;
+    const segs = currentPath.split("/").filter(Boolean);
+    if (segs.length === 0) return;
+    const upPath = segs.slice(0, -1).join("/");
+    setPathStack(pathStack.slice(0, -1));
+    fetchRepoFiles(project.repo, upPath);
+  }
+
   const handleClose = () => {
     setVisible(false);
     setTimeout(() => {
@@ -880,102 +1017,136 @@ function ProjectSidePanel({ project, onClose }) {
 
   if (!shouldRender) return null;
 
-  return React.createElement('div', {
-    ref: panelRef,
-    className:
-      "fixed top-0 right-0 h-full w-96 bg-transparent p-6 flex flex-col z-50 backdrop-blur-sm transition-transform duration-300 ease-in-out overflow-y-auto",
-    style: {
-      boxShadow: "0 0 60px 0 rgba(59,130,246,0.12)",
-      transform: visible ? "translateX(0)" : "translateX(100%)"
-    }
-  },
-    React.createElement('div', { className: "relative flex flex-col flex-1" },
-      // Close
-      React.createElement('button', {
-        onClick: handleClose,
-        className: "absolute top-2 right-2 text-white bg-black/40 rounded-full w-8 h-8 flex items-center justify-center hover:bg-blue-700/60 outline-glow z-10"
-      }, React.createElement('span', { className: "text-2xl font-bold" }, "×")),
-      // Content card
-      React.createElement('div', { className: "flex flex-col items-center outline-glow active rounded-2xl p-4 mt-6 bg-black/30 relative" },
-        project.logo || project.image
-          ? React.createElement('img', {
-              src: project.logo || project.image,
-              alt: project.title + " logo",
-              className: "w-20 h-20 rounded-xl mb-4 object-cover shadow-lg"
-            })
-          : null,
-        React.createElement('h2', { className: "text-2xl font-bold mb-2 text-white text-center" }, project.title),
-        React.createElement('p', { className: "mb-4 text-white text-center" }, project.description),
-        // Images grid if present
-        project.images && project.images.length > 0 &&
-          React.createElement('div', { className: "grid grid-cols-1 gap-4 w-full mt-4" },
-            project.images.map((img, i) =>
-              React.createElement('img', {
-                key: i,
-                src: img,
-                alt: project.title + " screenshot " + (i+1),
-                className: "rounded-xl object-cover shadow-lg cursor-pointer",
-                onClick: () => setLightboxImage(img)
+  // Breadcrumb segments
+  const breadcrumbSegments = getBreadcrumbSegments(currentPath);
+
+  // For overlay IDE: close button style like left panel, background like left panel, etc.
+  const themeVars = window._themeVars || {
+    button: "#3b82f6",
+    panel: "#1a1a1a",
+    cardBorder: "#3b82f6"
+  };
+
+  return React.createElement(
+    React.Fragment,
+    null,
+    React.createElement('div', {
+      ref: panelRef,
+      className:
+        "fixed top-0 right-0 h-full w-96 bg-transparent p-6 flex flex-col z-50 backdrop-blur-sm transition-transform duration-300 ease-in-out overflow-y-auto",
+      style: {
+        boxShadow: "0 0 60px 0 rgba(59,130,246,0.12)",
+        transform: visible ? "translateX(0)" : "translateX(100%)"
+      }
+    },
+      React.createElement('div', { className: "relative flex flex-col flex-1" },
+        // Close
+        React.createElement('button', {
+          onClick: handleClose,
+          className: "absolute top-2 right-2 text-white bg-black/40 rounded-full w-8 h-8 flex items-center justify-center hover:bg-blue-700/60 outline-glow z-10"
+        }, React.createElement('span', { className: "text-2xl font-bold" }, "×")),
+        // Content card
+        React.createElement('div', { className: "flex flex-col items-center outline-glow active rounded-2xl p-4 mt-6 bg-black/30 relative" },
+          project.logo || project.image
+            ? React.createElement('img', {
+                src: project.logo || project.image,
+                alt: project.title + " logo",
+                className: "w-20 h-20 rounded-xl mb-4 object-cover shadow-lg"
               })
-            )
+            : null,
+          React.createElement('h2', { className: "text-2xl font-bold mb-2 text-white text-center" }, project.title),
+          React.createElement('p', { className: "mb-4 text-white text-center" }, project.description),
+          // Images grid if present
+          project.images && project.images.length > 0 &&
+            React.createElement('div', { className: "grid grid-cols-1 gap-4 w-full mt-4" },
+              project.images.map((img, i) =>
+                React.createElement('img', {
+                  key: i,
+                  src: img,
+                  alt: project.title + " screenshot " + (i+1),
+                  className: "rounded-xl object-cover shadow-lg cursor-pointer",
+                  onClick: () => setLightboxImage(img)
+                })
+              )
+            ),
+          React.createElement('div', { className: "flex gap-3 mb-4" },
+            project.repo && React.createElement('a', {
+              href: project.repo, target: "_blank", rel: "noopener noreferrer", className: "hover:text-blue-400"
+            }, React.createElement('img', {
+              src: "https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/github.svg",
+              alt: "GitHub", style: { width: 24, height: 24, filter: "invert(1)" }
+            })),
+            project.discord && React.createElement('a', {
+              href: project.discord, target: "_blank", rel: "noopener noreferrer", className: "hover:text-blue-400"
+            }, React.createElement('img', {
+              src: "https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/discord.svg",
+              alt: "Discord", style: { width: 24, height: 24, filter: "invert(1)" }
+            }))
           ),
-        React.createElement('div', { className: "flex gap-3 mb-4" },
-          project.repo && React.createElement('a', {
-            href: project.repo, target: "_blank", rel: "noopener noreferrer", className: "hover:text-blue-400"
-          }, React.createElement('img', {
-            src: "https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/github.svg",
-            alt: "GitHub", style: { width: 24, height: 24, filter: "invert(1)" }
-          })),
-          project.discord && React.createElement('a', {
-            href: project.discord, target: "_blank", rel: "noopener noreferrer", className: "hover:text-blue-400"
-          }, React.createElement('img', {
-            src: "https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/discord.svg",
-            alt: "Discord", style: { width: 24, height: 24, filter: "invert(1)" }
-          }))
-        )
-      ),
-      // GitHub Stats card
-      (project.repo && (
-        React.createElement('div', { className: "outline-glow active bg-black/30 rounded-2xl p-4 mt-4 w-full text-center" },
-          React.createElement('h3', { className: "text-lg font-bold text-white mb-2" }, "GitHub Stats"),
-          React.createElement('p', { className: "text-white" }, loadingGitHub ? "Loading…" : `⭐ Stars: ${githubStats.stars ?? "Unknown"}`),
-          React.createElement('p', { className: "text-white" }, loadingGitHub ? "" : `🍴 Forks: ${githubStats.forks ?? "Unknown"}`),
-          React.createElement('p', { className: "text-white" }, loadingGitHub ? "" : `👥 Contributors: ${githubStats.contributors ?? "Unknown"}`),
-          React.createElement('button', {
-            onClick: async () => {
-              setLoadingGitHub(true);
-              const stats = await fetchGitHubRepoStats(project.repo);
-              setGithubStats(stats);
-              setLoadingGitHub(false);
-            },
-            className: "mt-3 px-3 py-1 rounded-lg bg-black/40 hover:bg-black/60 text-white text-sm"
-          }, "Refresh")
-        )
-      )),
-      // Discord Members card (separate)
-      (project.discord || project.guildId || typeof project.discordMemberCount === 'number') &&
-        React.createElement('div', { className: "outline-glow active bg-black/30 rounded-2xl p-4 mt-4 w-full text-center" },
-          React.createElement('h3', { className: "text-lg font-bold text-white mb-1" }, "Discord Members"),
-          loadingCount
-            ? React.createElement('p', { className: "text-white/80" }, "Loading…")
-            : (countError
-                ? React.createElement('p', { className: "text-white/70" }, "Unavailable")
-                : React.createElement('p', { className: "text-white text-xl" }, memberCount ?? "Unknown")
-              ),
-          React.createElement('button', {
-            onClick: async () => {
-              // manual refresh
-              setLoadingCount(true);
-              const { count } = await fetchDiscordMemberCount({
-                discord: project.discord,
-                guildId: project.guildId
-              });
-              setMemberCount(typeof count === 'number' ? count : (project.discordMemberCount ?? null));
-              setLoadingCount(false);
-            },
-            className: "mt-3 px-3 py-1 rounded-lg bg-black/40 hover:bg-black/60 text-white text-sm"
-          }, "Refresh")
-        )
+          // View Code Button
+          project.repo && (
+            React.createElement('button', {
+              className: "bg-blue-600 text-white px-3 py-2 mt-4 rounded text-sm outline-glow",
+              style: {
+                backgroundColor: themeVars.button,
+                border: `2px solid transparent`,
+                transition: "border 0.3s, background 0.3s"
+              },
+              onMouseEnter: e => { e.currentTarget.style.border = `2px solid ${themeVars.cardBorder}`; },
+              onMouseLeave: e => { e.currentTarget.style.border = "2px solid transparent"; },
+              onClick: handleOpenCode
+            }, "View Code")
+          )
+        ),
+        // GitHub Stats card
+        (project.repo && (
+          React.createElement('div', { className: "outline-glow active bg-black/30 rounded-2xl p-4 mt-4 w-full text-center" },
+            React.createElement('h3', { className: "text-lg font-bold text-white mb-2" }, "GitHub Stats"),
+            React.createElement('p', { className: "text-white" }, loadingGitHub ? "Loading…" : `⭐ Stars: ${githubStats.stars ?? "Unknown"}`),
+            React.createElement('p', { className: "text-white" }, loadingGitHub ? "" : `🍴 Forks: ${githubStats.forks ?? "Unknown"}`),
+            React.createElement('p', { className: "text-white" }, loadingGitHub ? "" : `👥 Contributors: ${githubStats.contributors ?? "Unknown"}`),
+            React.createElement('button', {
+              onClick: async () => {
+                setLoadingGitHub(true);
+                const stats = await fetchGitHubRepoStats(project.repo);
+                setGithubStats(stats);
+                setLoadingGitHub(false);
+              },
+              className: "mt-3 px-3 py-1 rounded-lg bg-black/40 hover:bg-black/60 text-white text-sm outline-glow",
+              style: { border: "2px solid transparent", transition: "border 0.3s" },
+              onMouseEnter: e => { e.currentTarget.style.border = `2px solid ${themeVars.cardBorder}`; },
+              onMouseLeave: e => { e.currentTarget.style.border = "2px solid transparent"; }
+            }, "Refresh")
+          )
+        )),
+        // Discord Members card (separate)
+        (project.discord || project.guildId || typeof project.discordMemberCount === 'number') &&
+          React.createElement('div', { className: "outline-glow active bg-black/30 rounded-2xl p-4 mt-4 w-full text-center" },
+            React.createElement('h3', { className: "text-lg font-bold text-white mb-1" }, "Discord Members"),
+            loadingCount
+              ? React.createElement('p', { className: "text-white/80" }, "Loading…")
+              : (countError
+                  ? React.createElement('p', { className: "text-white/70" }, "Unavailable")
+                  : React.createElement('p', { className: "text-white text-xl" }, memberCount ?? "Unknown")
+                ),
+            React.createElement('button', {
+              onClick: async () => {
+                // manual refresh
+                setLoadingCount(true);
+                const { count } = await fetchDiscordMemberCount({
+                  discord: project.discord,
+                  guildId: project.guildId
+                });
+                setMemberCount(typeof count === 'number' ? count : (project.discordMemberCount ?? null));
+                setLoadingCount(false);
+              },
+              className: "mt-3 px-3 py-1 rounded-lg bg-black/40 hover:bg-black/60 text-white text-sm outline-glow",
+              style: { border: "2px solid transparent", transition: "border 0.3s" },
+              onMouseEnter: e => { e.currentTarget.style.border = `2px solid ${themeVars.cardBorder}`; },
+              onMouseLeave: e => { e.currentTarget.style.border = "2px solid transparent"; }
+            }, "Refresh")
+          )
+      )
     ),
     // Lightbox overlay for images
     lightboxImage && React.createElement('div', {
@@ -987,6 +1158,117 @@ function ProjectSidePanel({ project, onClose }) {
         alt: "Expanded",
         className: "max-w-full max-h-full rounded-xl shadow-2xl"
       })
+    ),
+    // IDE Fullscreen Overlay
+    showIDEFull && React.createElement('div', {
+      className: "fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm",
+      style: { color: "#fff" }
+    },
+      React.createElement('div', {
+        className: "flex w-[90vw] h-[90vh] rounded-2xl overflow-hidden outline-glow active relative",
+        style: { boxShadow: "0 0 60px 0 rgba(59,130,246,0.12)" }
+      },
+        // Left: file explorer
+        React.createElement('div', {
+          className: "flex flex-col bg-black/30 outline-glow active border-r border-gray-700 h-full w-72 p-3 relative",
+          style: { borderRadius: "1.5rem 0 0 1.5rem" }
+        },
+          // Top bar with close button (mobile/UX)
+          React.createElement('div', { className: "flex items-center mb-2" },
+            React.createElement('button', {
+              onClick: () => setShowIDEFull(false),
+              className: "text-white bg-black/40 rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/60 outline-glow",
+              style: { border: "2px solid transparent", transition: "border 0.3s" },
+              onMouseEnter: e => { e.currentTarget.style.border = `2px solid ${themeVars.cardBorder}`; },
+              onMouseLeave: e => { e.currentTarget.style.border = "2px solid transparent"; }
+            }, React.createElement('span', { className: "text-2xl font-bold" }, "×"))
+          ),
+          // Breadcrumb + Up
+          React.createElement('div', { className: "flex items-center gap-1 mb-3 flex-wrap" },
+            React.createElement('button', {
+              className: "bg-black/40 hover:bg-black/60 text-white text-sm rounded-lg px-2 py-1 outline-glow",
+              style: { border: "2px solid transparent", transition: "border 0.3s", marginRight: "0.25rem" },
+              onMouseEnter: e => { e.currentTarget.style.border = `2px solid ${themeVars.cardBorder}`; },
+              onMouseLeave: e => { e.currentTarget.style.border = "2px solid transparent"; },
+              onClick: () => {
+                setPathStack([]);
+                fetchRepoFiles(project.repo, "");
+              }
+            }, "root"),
+            (() => {
+              const segments = getBreadcrumbSegments(currentPath);
+              return segments.length > 0 && segments.map((seg, idx) =>
+                React.createElement(React.Fragment, { key: seg.path },
+                  React.createElement('span', { className: "mx-1 text-gray-500" }, "/"),
+                  idx === segments.length - 1
+                    ? React.createElement('span', {
+                        className: "bg-black/40 text-white text-sm rounded-lg px-2 py-1 outline-glow font-bold"
+                      }, seg.name)
+                    : React.createElement('button', {
+                        className: "bg-black/40 hover:bg-black/60 text-white text-sm rounded-lg px-2 py-1 outline-glow",
+                        style: { border: "2px solid transparent", transition: "border 0.3s" },
+                        onMouseEnter: e => { e.currentTarget.style.border = `2px solid ${themeVars.cardBorder}`; },
+                        onMouseLeave: e => { e.currentTarget.style.border = "2px solid transparent"; },
+                        onClick: () => handleBreadcrumbClick(idx, segments)
+                      }, seg.name)
+                )
+              );
+            })(),
+            currentPath && React.createElement('button', {
+              className: "ml-2 bg-black/40 hover:bg-black/60 text-white text-sm rounded-lg px-2 py-1 outline-glow",
+              style: { border: "2px solid transparent", transition: "border 0.3s" },
+              onMouseEnter: e => { e.currentTarget.style.border = `2px solid ${themeVars.cardBorder}`; },
+              onMouseLeave: e => { e.currentTarget.style.border = "2px solid transparent"; },
+              onClick: handleUpOne,
+              title: "Up one folder"
+            }, "↑ Up")
+          ),
+          // File explorer list
+          React.createElement('div', { className: "flex-1 min-h-0 overflow-y-auto mt-1 pr-1" },
+            files.length === 0
+              ? React.createElement('div', { className: "text-gray-400 text-xs" }, "No files")
+              : files.map((file, idx) =>
+                React.createElement('div', {
+                  key: idx,
+                  className:
+                    "flex items-center gap-1 text-white cursor-pointer hover:bg-black/60 p-1 rounded-lg outline-glow" +
+                    (selectedFile && selectedFile.path === file.path ? " bg-black/60" : ""),
+                  style: { border: "2px solid transparent", transition: "border 0.3s" },
+                  onMouseEnter: e => { e.currentTarget.style.border = `2px solid ${themeVars.cardBorder}`; },
+                  onMouseLeave: e => { e.currentTarget.style.border = "2px solid transparent"; },
+                  onClick: () => {
+                    if (file.type === "dir") {
+                      handleDirClick(file);
+                    } else {
+                      fetchFileContent(file);
+                    }
+                  }
+                },
+                  file.type === "dir"
+                    ? React.createElement('span', { className: "mr-1" }, "📁")
+                    : React.createElement('span', { className: "mr-1" }, "📄"),
+                  React.createElement('span', null, file.name)
+                )
+              )
+          )
+        ),
+        // Right: code display
+        React.createElement('div', {
+          className: "flex-1 flex flex-col bg-black/30 rounded-2xl outline-glow active h-full p-6 overflow-auto",
+          style: { borderRadius: "0 1.5rem 1.5rem 0", minWidth: 0 }
+        },
+          selectedFile
+            ? React.createElement('pre', {
+                className: "rounded-xl p-4 overflow-auto text-sm bg-black/40",
+                style: { margin: 0 }
+              },
+                React.createElement('code', {
+                  className: getLanguage(selectedFile?.name)
+                }, fileContent)
+              )
+            : React.createElement('div', { className: "text-gray-400 text-xs p-4" }, "Select a file to view its contents")
+        )
+      )
     )
   );
 }
@@ -996,6 +1278,7 @@ function App() {
   const [activeTab, _setActiveTab] = useState("announcements");
   const [selectedProject, setSelectedProject] = useState(null);
   const [theme, setTheme] = useState("blue"); // default theme
+
 
   // Wrap setActiveTab to also close project panel
   const setActiveTab = (tab) => {
